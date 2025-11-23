@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="w-full md:w-1/2 relative">
-        <NeoCard className="rotate-2 hover:rotate-0 transition-transform duration-300 relative z-10" color="bg-white">
+        <NeoCard className="rotate-2 hover:rotate-0 relative z-10" color="bg-white">
           <div className="aspect-square bg-gray-200 border-2 border-black overflow-hidden relative group">
              {/* Placeholder for profile image since none provided, using a stylish brutalist placeholder */}
              <img 
