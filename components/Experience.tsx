@@ -44,16 +44,17 @@ const Experience: React.FC = () => {
             ))}
           </div>
 
-          <h2 className="text-4xl font-black mb-8 border-b-4 border-black inline-block bg-neo-green px-2">
-            PUBLICATIONS
+           <h2 className="text-4xl font-black mb-8 border-b-4 border-black inline-block bg-neo-green px-2">
+            HONORS
           </h2>
-          <div className="space-y-4">
-             {PROFILE_DATA.publications.map((pub, idx) => (
-               <div key={idx} className="bg-black text-white p-4 border-4 border-neo-yellow shadow-neo">
-                 <p className="font-bold italic">"{pub}"</p>
-               </div>
-             ))}
-          </div>
+           <div className="space-y-8">
+              {PROFILE_DATA.awards.map((award, idx) => (
+                  <div key={idx} className="bg-black text-white p-6 border-4 border-neo-yellow shadow-neo hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                      <span className="text-2xl mr-2">🏆</span>
+                      <span className="font-bold text-lg">{award}</span>
+                  </div>
+              ))}
+           </div>
         </div>
       </div>
     </section>
