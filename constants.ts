@@ -131,11 +131,6 @@ export const PROFILE_DATA = {
   awards: [
     { name: "Institute Colors", issuer: "Punjab Engineering College", date: "Aug 2021", note: "Highest honour given by the College" }
   ],
-  thesis: {
-    quote: "This present moment used to be the unimaginable",
-    attribution: "— and that's the whole job.",
-    body: "I grew up in Bathinda. My grandmother told stories about courtrooms. My father drew funnels. My engineering college taught me electronics. None of these things — combined — were supposed to produce someone who ships Chrome extensions in an evening, runs autonomous AI agents that email schools at scale, and writes books about Indian judicial history. But here we are. The barrier to building isn't technical anymore. The barrier is deciding to start. So I'm starting. A lot. In public."
-  },
   origin: {
     chapter: "01",
     title: "Origin",

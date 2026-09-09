@@ -2,7 +2,6 @@ import React from 'react';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
 import MissionControl from './components/MissionControl';
-import Thesis from './components/Thesis';
 import InteractiveBlogs from './components/InteractiveBlogs';
 import Publications from './components/Publications';
 import Experience from './components/Experience';
@@ -19,7 +18,6 @@ const App: React.FC = () => {
         <nav className="flex gap-4 md:gap-5 overflow-x-auto whitespace-nowrap">
           <a href="#products" className="hover:text-neo-yellow">products</a>
           <a href="#systems" className="hover:text-neo-yellow">systems</a>
-          <a href="#thesis" className="hover:text-neo-yellow">thesis</a>
           <a href="/interactive-blogs/" className="hover:text-neo-yellow">interactive blogs</a>
           <a href="#cv" className="hover:text-neo-yellow">cv</a>
           <a href="#contact" className="hover:text-neo-yellow font-bold">contact →</a>
@@ -30,7 +28,6 @@ const App: React.FC = () => {
         <Hero />
         <Projects />
         <MissionControl />
-        <Thesis />
         <InteractiveBlogs />
         <Publications />
         <Experience />
