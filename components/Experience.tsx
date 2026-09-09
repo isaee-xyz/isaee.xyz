@@ -1,61 +1,84 @@
 import React from 'react';
-import NeoCard from './NeoCard';
 import { PROFILE_DATA } from '../constants';
 
 const Experience: React.FC = () => {
   return (
-    <section id="experience" className="container mx-auto px-4 py-20">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Experience Column */}
-        <div>
-          <h2 className="text-4xl font-black mb-8 border-b-4 border-black inline-block bg-neo-yellow px-2">
-            EXPERIENCE
+    <section id="cv" className="bg-white border-b-4 border-black py-20 md:py-28">
+      <div className="container mx-auto px-4">
+
+        <div className="max-w-3xl mb-12">
+          <div className="font-mono text-xs font-bold tracking-widest mb-3">[ 07 / TRACK RECORD ]</div>
+          <h2 className="text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tight">
+            The CV, briefly.
           </h2>
-          <div className="space-y-8">
-            {PROFILE_DATA.experience.map((exp, idx) => (
-              <NeoCard key={idx} className="relative group">
-                <div className="absolute -left-3 -top-3 w-8 h-8 bg-black text-white flex items-center justify-center font-bold border-2 border-white z-10">
-                  {idx + 1}
-                </div>
-                <h3 className="text-xl font-bold uppercase">{exp.role}</h3>
-                <h4 className="text-neo-blue font-black text-lg">{exp.company}</h4>
-                <div className="font-mono text-sm text-gray-600 my-2 bg-gray-100 p-1 inline-block border border-black">
-                  {exp.period}
-                </div>
-                {exp.description && <p className="mt-2 font-medium">{exp.description}</p>}
-                <p className="text-xs text-gray-500 mt-1">{exp.location}</p>
-              </NeoCard>
-            ))}
-          </div>
+          <p className="text-lg md:text-xl mt-5 max-w-2xl border-l-4 border-black pl-4">
+            Five years. Three EdTechs. One venture studio. The bullets are descriptive, not embellished — ask me for numbers in conversation.
+          </p>
         </div>
 
-        {/* Education & Awards Column */}
-        <div>
-          <h2 className="text-4xl font-black mb-8 border-b-4 border-black inline-block bg-neo-pink px-2">
-            EDUCATION
-          </h2>
-          <div className="space-y-8 mb-12">
-            {PROFILE_DATA.education.map((edu, idx) => (
-              <NeoCard key={idx} color="bg-white">
-                <h3 className="text-xl font-bold">{edu.institution}</h3>
-                <p className="font-mono text-sm">{edu.degree}</p>
-                <p className="text-gray-500 text-xs font-bold mt-1">{edu.period}</p>
-              </NeoCard>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
 
-           <h2 className="text-4xl font-black mb-8 border-b-4 border-black inline-block bg-neo-green px-2">
-            HONORS
-          </h2>
-           <div className="space-y-8">
-              {PROFILE_DATA.awards.map((award, idx) => (
-                  <div key={idx} className="bg-black text-white p-6 border-4 border-neo-yellow shadow-neo hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
-                      <span className="text-2xl mr-2">🏆</span>
-                      <span className="font-bold text-lg">{award}</span>
-                  </div>
+          {/* Roles list — dense, no card chrome */}
+          <ol className="md:col-span-8 border-4 border-black bg-white divide-y-4 divide-black">
+            {PROFILE_DATA.experience.map((exp) => (
+              <li key={exp.role + exp.period} className="p-5 md:p-6">
+                <div className="flex flex-wrap items-baseline gap-2 mb-1">
+                  <h3 className="text-lg md:text-xl font-black uppercase leading-tight">{exp.role}</h3>
+                  {exp.period.includes('Present') && (
+                    <span className="font-mono text-[10px] font-bold bg-neo-green border-2 border-black px-2 py-0.5">● ACTIVE</span>
+                  )}
+                </div>
+                <div className="flex flex-wrap items-baseline gap-2 mb-2">
+                  <span className="text-base font-black text-neo-blue">{exp.company}</span>
+                  <span className="font-mono text-[11px] text-gray-600">· {exp.period} · {exp.location}</span>
+                </div>
+                {exp.description && (
+                  <p className="text-sm md:text-base leading-relaxed">{exp.description}</p>
+                )}
+                {exp.highlights && exp.highlights.length > 0 && (
+                  <ul className="mt-3 space-y-1.5">
+                    {exp.highlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm leading-relaxed text-gray-800">
+                        <span className="text-neo-pink font-black mt-0.5">▸</span>
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ol>
+
+          {/* Education + honour sidebar */}
+          <aside className="md:col-span-4 space-y-5">
+            <div className="border-4 border-black bg-neo-yellow p-5">
+              <div className="font-mono text-[10px] font-bold tracking-widest mb-3">EDUCATION</div>
+              {PROFILE_DATA.education.map((edu, i) => (
+                <div key={i} className={i > 0 ? 'mt-4 pt-4 border-t-2 border-black' : ''}>
+                  <div className="font-black text-base leading-tight">{edu.institution}</div>
+                  <div className="font-mono text-xs mt-1">{edu.degree}</div>
+                  <div className="font-mono text-[10px] text-gray-700 mt-1">{edu.period}</div>
+                </div>
               ))}
-           </div>
+            </div>
+
+            <div className="border-4 border-black bg-black text-white p-5">
+              <div className="font-mono text-[10px] font-bold tracking-widest text-neo-yellow mb-3">HONOUR</div>
+              {PROFILE_DATA.awards.map((a, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-2xl">🏆</span>
+                  <div>
+                    <div className="font-black text-base leading-tight">{a.name}</div>
+                    <div className="font-mono text-[10px] text-neo-yellow mt-1">{a.issuer} · {a.date}</div>
+                    {a.note && <div className="text-xs text-gray-300 mt-1">{a.note}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </aside>
+
         </div>
+
       </div>
     </section>
   );

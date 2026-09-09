@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>isaee.xyz — Projects Section Preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'neo-yellow': '#FFDE00',
+          'neo-pink':   '#FF90E8',
+          'neo-blue':   '#3333FF',
+          'neo-green':  '#23FF23',
+          'neo-orange': '#FF6B00',
+        },
+        fontFamily: {
+          'sans': ['"Lexend Mega"', 'sans-serif'],
+          'mono': ['"Space Mono"', 'monospace'],
+        },
+        boxShadow: {
+          'neo':    '5px 5px 0px 0px rgba(0,0,0,1)',
+          'neo-lg': '10px 10px 0px 0px rgba(0,0,0,1)',
+          'neo-xl': '15px 15px 0px 0px rgba(0,0,0,1)',
+        }
+      }
+    }
+  }
+</script>
+<style> body { font-family: "Lexend Mega", sans-serif; } </style>
+</head>
+<body class="bg-black">
+
+<!-- ========== PROJECTS SECTION (mirrors components/Projects.tsx) ========== -->
+<section id="projects" class="bg-black text-white py-20 border-y-4 border-black relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(#ffffff33 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+  <div class="container mx-auto px-4 relative">
+
+    <!-- Header -->
+    <div class="mb-16">
+      <div class="inline-block bg-neo-yellow border-2 border-white px-4 py-1 font-mono font-bold text-black mb-4 transform -rotate-2" style="box-shadow: 6px 6px 0 0 #fff;">
+        $ ls ./builds
+      </div>
+      <h2 class="text-4xl md:text-6xl font-black uppercase mb-4 leading-tight">
+        Things I've <span class="text-neo-yellow">Shipped</span>
+      </h2>
+      <p class="text-xl max-w-2xl border-l-4 border-neo-pink pl-4 text-gray-200">
+        Web products, Chrome extensions, and weekend builds. Itch appears, fix gets shipped — usually in an evening.
+      </p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- 1. Howtohelp.in -->
+      <a href="https://howtohelp.in" target="_blank" class="block group -rotate-1 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-neo-yellow border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">FLAGSHIP · YC W26</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">WEB PRODUCT</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">Howtohelp.in</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● Building</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">AI-first platform helping people get unstuck — from real-world problems to career questions. The product I'm betting the next chapter on.</p>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">YC Winter 2026 cohort target</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VISIT SITE →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. GetSchoolsInfo (with techStack) -->
+      <a href="https://getschoolsinfo.com" target="_blank" class="block group rotate-1 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-neo-pink border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">FLAGSHIP · LIVE</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">WEB PRODUCT</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">GetSchoolsInfo.com</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● 96K sessions / 30d</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">India's largest school data platform — 64,000+ K-12 schools across 800+ districts on official UDISE+ data, plus 15,000+ preschool branches. 8-layer programmatic SEO architecture serves 1,281 canonical URLs. No paid rankings, no hidden agendas.</p>
+          <div class="mb-4 flex flex-wrap gap-1.5">
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Next.js 14 (App Router)</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">ISR · 24h cache</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">PostgreSQL</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Firebase Auth</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Cloudflare Edge</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Edge Middleware (rate-limit + bot)</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Docker</span>
+            <span class="font-mono text-[10px] font-bold bg-black text-white px-1.5 py-0.5 border border-black">Programmatic SEO</span>
+          </div>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">88,514 unique users · 43.3% scroll depth (Clarity, last 30d)</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VISIT SITE →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. GetPersonalisedCV -->
+      <a href="https://getpersonalisedcv.in" target="_blank" class="block group -rotate-2 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-neo-green border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">AI · CAREERS</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">WEB PRODUCT</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">GetPersonalisedCV.in</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● Live</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">Tailors a CV to the job you're applying to using AI — one input, one paste, one polished resume that actually matches the role.</p>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">Job-aware resume generation</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VISIT SITE →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. SocialSaver -->
+      <a href="https://github.com/isaee-xyz" target="_blank" class="block group rotate-1 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-white border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">CHROME EXTENSION</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">TOOL</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">SocialSaver</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● Free · No Tracking</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">Captures every Facebook Ad Library ad you browse — exports as ZIP of media + CSV + JSON. No signup, no analytics, nothing leaves your device. Built in an evening.</p>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">Zero data collection by design</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VIEW ON GITHUB →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. JSON Path Finder -->
+      <a href="https://github.com/isaee-xyz/Json-Path-Finder" target="_blank" class="block group -rotate-1 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-neo-orange border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">CHROME EXTENSION</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">DEV TOOL</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">JSON Path Finder</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● 500+ installs</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">Click any value in a JSON blob, copy its exact path. Validates, formats, supports dot + bracket notation. Built in a weekend, grew 449% organic.</p>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">500+ installs · 449% growth</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VIEW ON GITHUB →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6. YouTube Auto-Skipper -->
+      <a href="https://github.com/isaee-xyz/youtube-auto-skipper-and-mute" target="_blank" class="block group rotate-2 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-white border-4 border-black p-6 shadow-neo-lg h-full flex flex-col text-black">
+          <div class="flex justify-between items-start mb-4 gap-2">
+            <span class="bg-black text-white px-2 py-1 font-mono text-[10px] font-bold tracking-wider">CHROME EXTENSION</span>
+            <span class="font-mono text-[10px] font-bold border border-black bg-white px-2 py-1">TOOL</span>
+          </div>
+          <h3 class="text-2xl font-black uppercase leading-tight mb-2 group-hover:underline decoration-4">YouTube Auto-Skipper &amp; Mute</h3>
+          <div class="font-mono text-xs font-bold mb-3 inline-block self-start bg-black text-neo-yellow px-2 py-1">● Open Source</div>
+          <p class="text-sm leading-relaxed mb-4 border-l-2 border-black pl-3">Skips ads after a delay and mutes them while playing — does what you'd do manually, so creators still get paid. Per-channel allowlist, zero tracking.</p>
+          <div class="flex-1"></div>
+          <div class="border-t-2 border-black pt-3 mt-auto flex items-center justify-between gap-3">
+            <span class="font-mono text-xs font-bold leading-tight">Open source · MIT</span>
+            <span class="font-mono font-black text-sm whitespace-nowrap group-hover:bg-black group-hover:text-white px-2 py-1 border-2 border-black transition-colors">VIEW ON GITHUB →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Philosophy callout -->
+    <div class="mt-16 bg-neo-pink border-4 border-white p-6 md:p-8 text-black max-w-3xl" style="box-shadow: 10px 10px 0 0 #fff;">
+      <h3 class="font-mono text-xs font-bold mb-2 tracking-widest">// SHIPPING_PHILOSOPHY</h3>
+      <p class="text-lg md:text-xl font-bold leading-snug">
+        "In the AI era, your unfair advantage isn't just building fast — it's testing fast. The barrier isn't technical anymore. It's just deciding to start."
+      </p>
+    </div>
+
+    <!-- Footer CTAs -->
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="https://github.com/isaee-xyz" target="_blank">
+        <button class="bg-neo-green border-2 border-black font-bold py-2 px-6 shadow-neo transition-all hover:translate-x-[2px] hover:translate-y-[2px] text-black">SEE ALL ON GITHUB ↗</button>
+      </a>
+      <a href="https://isaee.medium.com" target="_blank">
+        <button class="bg-neo-pink border-2 border-black font-bold py-2 px-6 shadow-neo transition-all hover:translate-x-[2px] hover:translate-y-[2px] text-black">READ THE WRITING ↗</button>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Helper note (not part of the real site) -->
+<div class="bg-neo-yellow border-t-4 border-black py-4 text-center font-mono text-xs text-black">
+  PREVIEW · this file is a one-shot mock of /components/Projects.tsx · delete after reviewing
+</div>
+
+</body>
+</html>

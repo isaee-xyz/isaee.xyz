@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { sendChatMessage } from '../services/gemini';
-import NeoButton from './NeoButton';
 
 interface Message {
   role: 'user' | 'model';
@@ -33,8 +32,9 @@ const ChatWidget: React.FC = () => {
     setInput('');
     setIsLoading(true);
 
-    // Prepare history for API
-    const history = messages.map(m => ({
+    // Prepare history for API — skip the hardcoded greeting at index 0:
+    // Gemini rejects a history whose first turn has role 'model'.
+    const history = messages.slice(1).map(m => ({
       role: m.role,
       parts: [{ text: m.text }]
     }));
@@ -53,8 +53,9 @@ const ChatWidget: React.FC = () => {
           {/* Header */}
           <div className="bg-neo-blue p-3 border-b-4 border-black flex justify-between items-center">
             <h3 className="text-white font-bold text-lg font-mono">TWINKLE_AI.exe</h3>
-            <button 
+            <button
               onClick={() => setIsOpen(false)}
+              aria-label="Close chat"
               className="bg-red-500 w-8 h-8 border-2 border-black flex items-center justify-center font-bold text-white hover:bg-red-600"
             >
               X
@@ -95,6 +96,7 @@ const ChatWidget: React.FC = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              aria-label="Chat message"
               placeholder="Ask about Twinkle..."
               className="flex-1 p-2 border-2 border-black font-mono focus:outline-none"
             />
@@ -112,6 +114,7 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close chat" : "Open chat with Twinkle's AI assistant"}
         className="pointer-events-auto group flex items-center gap-2"
       >
         <span className={`bg-black text-white px-2 py-1 font-mono text-sm border-2 border-white transition-opacity ${isOpen ? 'opacity-0' : 'opacity-100'}`}>

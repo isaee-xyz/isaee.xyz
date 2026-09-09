@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f0f0f0;
+  background-image: radial-gradient(#000 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-serif,
+.font-display {
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+}

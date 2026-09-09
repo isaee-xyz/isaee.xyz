@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A scroll driven visual explainer of how AI text watermarking works: red and green token lists, SynthID tournament sampling, and statistical detection.">
+
+<title>The Invisible Watermark · Interactive Blogs · isaee.xyz</title>
+<link rel="canonical" href="https://isaee.xyz/interactive-blogs/ai-text-watermarking/">
+<meta name="theme-color" content="#f4f3ee">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<link rel="stylesheet" href="/interactive-blogs/ai-text-watermarking/explainer.css">
+</head>
+<body>
+<noscript><p class="prose">The full article is readable below. Enable JavaScript to explore the diagrams.</p></noscript>
+
+
+<div id="progress"></div>
+<header class="top"><a href="/">isaee.xyz</a><a href="/interactive-blogs/">← Interactive blogs</a></header>
+<nav class="chapter-nav" aria-label="Article chapters"><a href="#choosing">01 Choosing a token</a><a href="#colouring">02 The green list</a><a href="#tournament">03 The tournament</a><a href="#takeaways">04 What it means</a></nav>
+
+<section class="hero wrap">
+  <div class="eyebrow">01 / Interactive blogs · Artificial intelligence</div>
+  <h1>Why you cannot see a watermark in AI text</h1>
+  <p class="standfirst">Anthropic says Claude's writing will carry a hidden signature. There are no invisible characters and no secret metadata. The mark lives somewhere stranger: inside the dice rolls that chose the words.</p>
+  <div class="tiles" id="heroTiles"></div>
+  <p class="byline"><b>By Twinkle Garg.</b> Based on Kirchenbauer et al. (2023) and Google DeepMind's SynthID Text (2024). Scroll to explore, or use the diagram’s step buttons.</p>
+</section>
+
+<section class="prose">
+  <p class="lede">Watermarking an image is easy. You have millions of pixels, and nudging a few thousand of them by one shade is invisible to any human eye. Text gives you almost nothing to play with. A sentence is a dozen words, and changing one of them can change what it means. "The capital of France is Paris" cannot quietly become "The capital of France is Lyon" just to carry a signature.</p>
+  <p>You could hide special Unicode characters in the gaps. But text cleanup can strip those, and a watermark that dies to "paste as plain text" is not a watermark. A useful watermark needs some robustness to copying and editing. No method survives every transformation.</p>
+  <p>So how do you hide something inside ordinary words, without adding anything, without changing the meaning, and still find it later? The answer starts with a detail most people never see: how a language model picks its next word.</p>
+</section>
+
+<!-- CHAPTER 1: how a model picks a word -->
+<section class="scrolly" data-fig="A" id="choosing" aria-label="choosing">
+  <div class="figure"><div class="stage" id="figA">
+    <div class="layer show" data-l="0">
+      <div class="cap">A sentence in progress</div><div class="sent" id="a-sent">The quick brown</div>
+      <div class="tiles ghost-tiles" id="a-tiles"></div><div class="pipe"><span class="box">Context</span><span class="arrow">→</span><span class="box">Model</span><span class="arrow">→</span><span class="box key">Next token?</span></div><p class="note">A reply is built one choice at a time. Next, see the probabilities behind that choice.</p>
+    </div>
+    <div class="layer" data-l="1">
+      <div class="cap">Next token candidates</div>
+      <div class="bars" id="a-bars"></div>
+    </div>
+  </div></div>
+  <div class="steps">
+    <div class="step" data-i="0"><div class="step-card"><p class="chapter">Chapter 1 · Choosing a word</p><p>Give a language model the start of a sentence and ask it to continue.</p></div></div>
+    <div class="step" data-i="1"><div class="step-card"><p>The model does not see words. It breaks the text into <span class="kw">tokens</span>, small units it can score. Tokens are often fragments of words, but here every token is one full word.</p></div></div>
+    <div class="step" data-i="2"><div class="step-card"><p>It then produces a <span class="kw acc">probability</span> for every token in its vocabulary that could come next. Tens of thousands of candidates, most of them near zero.</p></div></div>
+    <div class="step" data-i="3"><div class="step-card"><p>Then it rolls a weighted dice. <span class="kw gold">fox</span> is the likeliest pick, but <span class="kw">dog</span> or <span class="kw">cat</span> can win too. With sampling enabled, repeated answers can vary.</p></div></div>
+    <div class="step" data-i="4"><div class="step-card"><p>The winner is added to the text and the whole process runs again for the next token. That small randomness at every step is the crack the watermark slips through. If the model is rolling dice anyway, someone can load them.</p></div></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>Colour the vocabulary</h2>
+  <p>In 2023 a team led by John Kirchenbauer at the University of Maryland published a scheme so simple it sounds like a trick. Before the model picks the next word, split the whole vocabulary at random into two lists. Half go on a green list, half on a red list. Then forbid the red ones.</p>
+</section>
+
+<!-- CHAPTER 2: red and green -->
+<section class="scrolly" data-fig="B" id="colouring" aria-label="colouring">
+  <div class="figure"><div class="stage" id="figB">
+    <div class="layer show" data-l="0">
+      <div class="sent" id="b-sent">The quick brown</div>
+      <div class="grid" id="b-grid"></div>
+    </div>
+    <div class="layer" data-l="1">
+      <div class="cap">Seeding the colours</div>
+      <div class="pipe"><span class="box">previous token: <b id="b-prev">brown</b></span><span>+</span><span class="box key">secret key</span><span class="arrow">→</span><span class="box">hash</span><span class="arrow">→</span><span class="box">seed</span><span class="arrow">→</span><span class="tile g sm">green</span><span class="tile r sm">red</span></div>
+      <p class="note">Same inputs, same seed, same colours. Deterministic but unpredictable to anyone without the key.</p>
+    </div>
+    <div class="layer" data-l="2">
+      <div class="cap">Detector replay · key known</div>
+      <div class="tiles" id="b-detect"></div>
+      <p class="note" id="b-detect-note">Toy hard watermark: 14 green choices. With independent 50/50 assignments, that occurs by chance about once in 16,384 trials.</p>
+    </div>
+    <div class="layer" data-l="3">
+      <div class="cap">Low entropy</div>
+      <div class="sent">The capital of France is</div>
+      <div class="bars" id="b-paris"></div>
+      <div class="fail" id="b-fail">The Lord of the <s>Rings</s> <em>Rum</em></div>
+    </div>
+  </div></div>
+  <div class="steps">
+    <div class="step" data-i="0"><div class="step-card"><p class="chapter">Chapter 2 · Red list, green list</p><p>Here is a slice of the vocabulary as the model sees it: candidates for the next token after <span class="kw">The quick brown</span>.</p></div></div>
+    <div class="step" data-i="1"><div class="step-card"><p>A watermarking function colours every token <span class="kw g">green</span> or <span class="kw r">red</span>. Fifty fifty in the original paper, though the share is a dial you can turn.</p></div></div>
+    <div class="step" data-i="2"><div class="step-card"><p>Red tokens are banned at this step. The model can only sample from the green list. It picks <span class="kw g">fox</span>.</p></div></div>
+    <div class="step" data-i="3"><div class="step-card"><p>But if the colouring is random, how can a detector ever know which words were green?</p><p>A <em>pseudorandom</em> generator starts from a <span class="kw">seed</span>. The same seed reproduces the same sequence. So the seed is built from two things a detector will also know later: the <span class="kw">previous token</span> and a <span class="kw acc">secret key</span>.</p></div></div>
+    <div class="step" data-i="4"><div class="step-card"><p>Now the previous token is <span class="kw">fox</span>. New hash, new seed, and the vocabulary is recoloured. The model samples from a fresh green list. Every single token gets its own colouring.</p></div></div>
+    <div class="step" data-i="5"><div class="step-card"><p>The detector has the finished text, so it knows every previous token. If it also holds the secret key, it can replay the colouring at each position. An unusually green sequence is the signal. In this hard-watermark toy example, every sampled token is green.</p></div></div>
+    <div class="step" data-i="6"><div class="step-card"><p>There is a catch, and it has a name: <span class="kw">entropy</span>. Sometimes the model has real freedom. Sometimes it has none. Put <span class="kw r">Paris</span> on the red list and the model is forced to write something wrong.</p><p>Run this hard version on a small model, ban the words "ring" and "rings", and you get exactly what you would expect.</p></div></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>A softer touch</h2>
+  <p>The same paper offers a fix. Instead of banning red tokens, give the green ones a small boost before the dice roll. A word the model is sure about, like Paris at 99 percent, stays on top even when it is red. But wherever three or four words are neck and neck, the boost quietly tips the choice toward green.</p>
+  <p>Detection changes with it. You can no longer ask "is everything green?" You ask "is this text greener than chance?" Count the green tokens, subtract what a coin flip would give you, divide by the standard deviation. That number is a z score, and a threshold such as four flags unusually green text. Under an ideal normal null model, the one-sided false-positive probability is about 1 in 31,600. Real thresholds need calibration; repeated contexts and short passages complicate that model.</p>
+  <p>It works, but it changes the model’s output distribution, and the boost needs tuning. Too small and nothing is detectable. Too large and you are back to banning words. In 2024, Google DeepMind asked a sharper question: what if the watermark preserved the model’s distribution on average, across watermark keys?</p>
+</section>
+
+<!-- CHAPTER 3: the tournament -->
+<section class="scrolly" data-fig="C" id="tournament" aria-label="tournament">
+  <div class="figure"><div class="stage" id="figC">
+    <div class="layer show" data-l="0">
+      <div class="sent" id="c-sent">The quick brown</div>
+      <div class="bracket" id="c-bracket"></div>
+    </div>
+    <div class="layer" data-l="1">
+      <div class="cap">Hindsight verdicts · 30 rounds per token</div>
+      <div class="dots" id="c-dots"></div>
+      <p class="note" id="c-dots-note">Green dots: rounds where the chosen token was on the green list.</p>
+    </div>
+    <div class="layer" data-l="2">
+      <div class="cap">Mean green score across a passage</div>
+      <div class="gauge">
+        <div class="axis" id="c-axis">
+          <div class="hump" style="left:22%;width:36%"><svg viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0 60 C 30 60, 40 4, 50 4 S 70 60, 100 60 Z" fill="var(--ink3)" opacity=".35"/></svg></div>
+          <div class="hump" id="c-hump2" style="left:52%;width:36%;opacity:0;transition:opacity .6s"><svg viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0 60 C 30 60, 40 4, 50 4 S 70 60, 100 60 Z" fill="var(--green)" opacity=".55"/></svg></div>
+          <div class="tick" style="left:10%">0.40</div><div class="tick" style="left:40%">0.50</div><div class="tick" style="left:70%">0.60</div><div class="tick" style="left:100%">0.70</div>
+          <div class="pin" id="c-pin" style="left:40%"><span id="c-pin-label">human · 0.50</span></div>
+        </div>
+        <div class="stat"><div>mean score<b id="c-mean">0.50</b></div><div>example passage<b>600 tokens</b></div><div>comparison<b id="c-z">baseline</b></div><div>verdict<b id="c-verdict">baseline</b></div></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="steps">
+    <div class="step" data-i="0"><div class="step-card"><p class="chapter">Chapter 3 · The tournament</p><p>SynthID Text, the method Anthropic says Claude will use, samples first and colours later. Draw eight candidates from the model's real probabilities. Because <span class="kw">fox</span> is likeliest, it shows up several times.</p></div></div>
+    <div class="step" data-i="1"><div class="step-card"><p>Pair them off. Colour the vocabulary. <span class="kw g">Green beats red</span>. Same colour, coin flip. Half the field is eliminated in round one.</p></div></div>
+    <div class="step" data-i="2"><div class="step-card"><p>Round two uses a fresh colouring, because the round number is folded into the hash. A token that was green a moment ago may be red now.</p></div></div>
+    <div class="step" data-i="3"><div class="step-card"><p>One token survives the final. It becomes the next word. A 30-round conceptual bracket has over a billion leaves. The implementation computes the equivalent probability updates efficiently; it does not draw and store a billion candidates for each token.</p></div></div>
+    <div class="step" data-i="4"><div class="step-card"><p>Why bother? Look at the low entropy case. Ask for the capital of France and all eight seats are <span class="kw">Paris</span>. It does not matter who is green. Paris wins, and the watermark cannot damage a word the model was sure about.</p><p>Every seat in the bracket was an honest sample. The watermark only decides which honest sample survives.</p></div></div>
+    <div class="step" data-i="5"><div class="step-card"><p class="chapter">Chapter 4 · Finding it</p><p>The detector never saw the bracket. It only sees the winner. So for every token it replays all 30 colourings and asks one question: in hindsight, how often was this word green?</p></div></div>
+    <div class="step" data-i="6"><div class="step-card"><p>For a human writer every verdict is a coin flip and the average sits at 0.50. A token that had to survive 30 rounds where green was favoured drifts higher. Not to one. Ties happen, low entropy happens. Across a long enough passage, that drift can become detectable. Short, repetitive, or edited text may not provide enough evidence.</p></div></div>
+    <div class="step" data-i="7"><div class="step-card"><p>The detector aggregates those scores and compares them with unwatermarked text. SynthID supports several detection methods, including a learned Bayesian detector. These curves illustrate a score shift, not a production detector or calibrated cutoff.</p><p>It is not a label that says "Claude wrote this". It is statistical evidence that these words kept landing green far more often than luck allows.</p></div></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2 id="takeaways">What this means in practice</h2>
+  <p>Google DeepMind reports a large live Gemini experiment with no statistically significant difference in user ratings between watermarked and unwatermarked responses. That supports the approach’s practical quality, while detection still has limits.</p>
+  <ol class="takeaways">
+    <li><b>The mark lives in freedom.</b> It is only written where the model had several good options. Words it was sure about are untouched.</li>
+    <li><b>It can fail.</b> Yes or no answers, multiple choice, lists of facts, very short replies. Not enough freedom, not enough tokens, no signal. Long, varied responses offer more room for a detectable signal.</li>
+    <li><b>Removing it is work.</b> Editing and paraphrasing can weaken the signal. How much survives depends on the method, passage length, and type of changes; there is no universal number of words you must replace.</li>
+    <li><b>Detection needs access.</b> Checking a provider’s mark requires its key or an authorized detector. Anthropic describes a detection API in private preview for eligible organizations; this article cannot test your text.</li>
+    <li><b>Local does not automatically mean unmarked.</b> A local model can use a watermarking sampler too. The presence of a mark depends on the generation setup, not where the model runs.</li>
+  </ol>
+  <p style="margin-top:1.6em">So the next time someone claims they can spot AI writing by its em dashes, remember where the real signature sits: in the statistical pattern of the word choices, not a visible punctuation habit.</p>
+</section>
+
+<footer>
+  Sources: Kirchenbauer, Geiping, Wen, Katz, Miers, Goldstein, <a href="https://arxiv.org/abs/2301.10226">A Watermark for Large Language Models</a> (2023) · Dathathri et al., <a href="https://www.nature.com/articles/s41586-024-08025-4">Scalable watermarking for identifying large language model outputs</a>, Nature (2024) · <a href="https://www.anthropic.com/news/claude-text-watermark">Anthropic: How Claude’s text watermark works</a> (updated September 2026) · <a href="https://github.com/google-deepmind/synthid-text">SynthID reference implementation</a>.<br><br>Further viewing: <a href="https://www.youtube.com/watch?v=FnAqruxx-QE">Code Bear</a> and <a href="https://www.youtube.com/watch?v=kVXp6UNVPTo">Computerphile</a>. Adapted from an explainer created with Claude. Probabilities, colours, curves, and scores are illustrative; this is not a watermark detector.<br><br><a href="/interactive-blogs/">← All interactive blogs</a> · <a href="/">isaee.xyz</a>
+</footer>
+
+<script src="/interactive-blogs/ai-text-watermarking/explainer.js" defer></script>
+
+</body>
+</html>

@@ -1,54 +1,70 @@
 import React from 'react';
-import NeoCard from './NeoCard';
-import NeoButton from './NeoButton';
 import { PROFILE_DATA } from '../constants';
 
 const Hero: React.FC = () => {
   return (
-    <section className="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row gap-12 items-center">
-      <div className="w-full md:w-1/2 flex flex-col gap-6">
-        <div className="inline-block bg-neo-orange border-2 border-black px-4 py-1 font-mono font-bold self-start transform -rotate-2 shadow-neo">
-          HELLO_WORLD
-        </div>
-        <h1 className="text-5xl md:text-7xl font-black uppercase leading-tight tracking-tighter">
-          {PROFILE_DATA.name}
-        </h1>
-        <h2 className="text-2xl font-bold font-mono bg-neo-yellow inline-block self-start px-2 border-2 border-black">
-          {PROFILE_DATA.headline}
-        </h2>
-        <p className="text-lg font-medium border-l-4 border-neo-blue pl-4 py-2">
-          {PROFILE_DATA.subHeadline}
-          <br />
-          <span className="text-gray-600 text-sm font-mono mt-2 block">📍 {PROFILE_DATA.location}</span>
-        </p>
-        
-        <div className="flex gap-4 flex-wrap">
-          <NeoButton onClick={() => document.getElementById('contact')?.scrollIntoView({behavior: 'smooth'})}>
-            LET'S CONNECT
-          </NeoButton>
-          <NeoButton variant="secondary" onClick={() => document.getElementById('experience')?.scrollIntoView({behavior: 'smooth'})}>
-            VIEW WORK
-          </NeoButton>
-        </div>
-      </div>
+    <section className="bg-white border-b-4 border-black">
+      <div className="container mx-auto px-4 pt-10 md:pt-16 pb-12 md:pb-20">
 
-      <div className="w-full md:w-1/2 relative">
-        <NeoCard className="rotate-2 hover:rotate-0 relative z-10" color="bg-white">
-          <div className="aspect-square bg-gray-200 border-2 border-black overflow-hidden relative group">
-             {/* Placeholder for profile image since none provided, using a stylish brutalist placeholder */}
-             <img 
-               src="https://picsum.photos/800/800?grayscale" 
-               alt="Twinkle Garg"
-               className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
-             />
-             <div className="absolute inset-0 bg-neo-pink mix-blend-multiply opacity-20 group-hover:opacity-0 transition-opacity"></div>
+        {/* Status pill — single source of priority signal */}
+        <div className="inline-flex items-stretch border-2 border-black shadow-neo mb-10 bg-white">
+          <span className="bg-black text-white font-mono text-[11px] font-bold tracking-widest px-3 py-1.5 flex items-center gap-2">
+            <span className="w-2 h-2 bg-neo-green inline-block"></span>
+            APPLYING · YC W26
+          </span>
+          <span className="font-mono text-[11px] font-bold tracking-widest px-3 py-1.5 flex items-center">
+            BUILDING · HOWTOHELP.IN
+          </span>
+        </div>
+
+        {/* The pitch — name + one-line positioning */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          <div className="lg:col-span-7">
+            {/* 6.8vw ≈ the widest "TWINKLE" can render without spilling into the intro column */}
+            <h1 className="font-black uppercase leading-[0.9] tracking-tighter text-[min(11.5vw,4.5rem)] sm:text-7xl lg:text-[min(6.8vw,8.5rem)]">
+              Twinkle<br />Garg.
+            </h1>
           </div>
-          <div className="mt-4 font-mono text-sm border-t-2 border-black pt-2 flex justify-between">
-            <span>STATUS: BUILDING</span>
-            <span className="font-bold text-neo-blue">ONLINE</span>
+          <div className="lg:col-span-5">
+            <p className="text-xl md:text-2xl font-medium leading-snug border-l-4 border-black pl-4">
+              Builder + product marketer. <span className="bg-neo-yellow px-1">Six shipped products,</span> one autonomous-agent stack, and a book about Indian judicial activism.
+              <span className="block mt-3 font-mono text-sm text-gray-600">Bengaluru · Born in Bathinda · 5+ years in startups</span>
+            </p>
           </div>
-        </NeoCard>
-        <div className="absolute top-0 right-0 w-full h-full bg-black border-4 border-black transform translate-x-4 translate-y-4 -z-0"></div>
+        </div>
+
+        {/* Proof strip — the four numbers a partner needs */}
+        <div className="grid grid-cols-2 md:grid-cols-4 mt-12 md:mt-16 border-4 border-black bg-black">
+          {PROFILE_DATA.heroStats.map((s, i) => (
+            <div
+              key={i}
+              className={`p-5 md:p-7 border-black bg-white ${i % 2 === 0 ? 'border-r-4' : ''} ${i < 2 ? 'border-b-4 md:border-b-0' : ''} ${i === 1 ? 'md:border-r-4' : ''}`}
+            >
+              <div className="text-4xl md:text-6xl font-black leading-none">{s.value}</div>
+              <div className="font-mono text-[10px] md:text-xs font-bold tracking-widest mt-3 text-gray-600">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA — single, decisive */}
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <a
+            href="#products"
+            className="bg-black text-white font-bold py-4 px-8 border-4 border-black shadow-neo hover:bg-neo-yellow hover:text-black transition-colors inline-flex items-center gap-3"
+          >
+            <span>SEE THE PROOF</span>
+            <span aria-hidden>↓</span>
+          </a>
+          <a
+            href="#contact"
+            className="font-mono text-sm font-bold underline underline-offset-4 decoration-2 hover:bg-neo-yellow px-1"
+          >
+            or skip to contact →
+          </a>
+        </div>
+
       </div>
     </section>
   );

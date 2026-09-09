@@ -1,0 +1,41 @@
+services:
+  web:
+    image: nginx:stable-alpine
+    container_name: isaee-web
+    restart: unless-stopped
+    mem_limit: 48m
+    cpus: 0.25
+    pids_limit: 32
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:size=8m
+      - /var/run:size=1m
+      - /tmp:size=4m
+    volumes:
+      - ./site:/srv/site:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - proxy
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: proxy
+      traefik.http.routers.isaee-http.rule: 'Host(`isaee.xyz`) || Host(`www.isaee.xyz`)'
+      traefik.http.routers.isaee-http.entrypoints: web
+      traefik.http.routers.isaee-http.middlewares: isaee-https
+      traefik.http.middlewares.isaee-https.redirectscheme.scheme: https
+      traefik.http.routers.isaee.rule: 'Host(`isaee.xyz`) || Host(`www.isaee.xyz`)'
+      traefik.http.routers.isaee.entrypoints: websecure
+      traefik.http.routers.isaee.tls.certresolver: myresolver
+      traefik.http.routers.isaee.service: isaee-static
+      traefik.http.routers.isaee-ip.rule: 'Host(`167.71.232.107`)'
+      traefik.http.routers.isaee-ip.entrypoints: web
+      traefik.http.routers.isaee-ip.service: isaee-static
+      traefik.http.services.isaee-static.loadbalancer.server.port: '80'
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: '2'
+networks:
+  proxy:
+    external: true

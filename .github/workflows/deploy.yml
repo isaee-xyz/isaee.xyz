@@ -1,0 +1,40 @@
+name: Deploy isaee.xyz to DigitalOcean
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: isaee-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build static website
+        run: npm run build
+        env:
+          VITE_GEMINI_API_KEY: ''
+      - name: Upload and activate release
+        env:
+          DEPLOY_KEY: ${{ secrets.ISAEE_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ISAEE_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/isaee
+          chmod 600 ~/.ssh/isaee
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          tar -czf - -C dist . | ssh -i ~/.ssh/isaee -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes isaee-deploy@167.71.232.107
+      - name: Verify the deployed article
+        run: |
+          curl --fail --retry 3 --retry-delay 3 http://167.71.232.107/interactive-blogs/ai-text-watermarking/ -o /tmp/article.html
+          grep -q 'Why you cannot see a watermark in AI text' /tmp/article.html

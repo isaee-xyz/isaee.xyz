@@ -3,9 +3,17 @@ import { RESUME_CONTEXT } from "../constants";
 
 let aiClient: GoogleGenAI | null = null;
 
+// SECURITY NOTE: this is a fully static site, so any key placed here ships to
+// every visitor's browser. Only use a key that is restricted (HTTP referrer
+// restriction to isaee.xyz in Google Cloud Console) and quota-capped, or leave
+// it unset to run in demo mode. For unrestricted keys, proxy through a backend.
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY ?? "";
+
 const getAiClient = () => {
+  if (!API_KEY) return null;
+
   if (!aiClient) {
-    aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    aiClient = new GoogleGenAI({ apiKey: API_KEY });
   }
   return aiClient;
 };
@@ -16,11 +24,14 @@ export const sendChatMessage = async (
 ): Promise<string> => {
   try {
     const ai = getAiClient();
-    
-    // We recreate the chat session for each message to simplify state management in this demo,
+
+    // If no API key is present, return a static response to prevent crashes
+    if (!ai) {
+      return "I'm currently running in demo mode without an active API Key. Please configure the API Key to chat with me! Twinkle is a Product Growth Manager building Howtohelp.in for YC Winter 2026.";
+    }
+
+    // We recreate the chat session for each message to simplify state management,
     // but typically you'd keep a persistent Chat object.
-    // Here we construct the full history + system instruction.
-    
     const chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
