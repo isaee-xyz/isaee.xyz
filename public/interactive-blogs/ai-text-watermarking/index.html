@@ -1,16 +1,288 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The invisible watermark · isaee.xyz</title><meta name="description" content="An interactive, first-principles guide to AI text watermarking: sampling, green lists, SynthID tournaments and statistical evidence."><meta name="theme-color" content="#f5f3ed"><link rel="canonical" href="https://isaee.xyz/interactive-blogs/ai-text-watermarking/"><meta property="og:type" content="article"><meta property="og:site_name" content="isaee.xyz"><meta property="og:url" content="https://isaee.xyz/interactive-blogs/ai-text-watermarking/"><meta property="og:title" content="The invisible watermark"><meta property="og:description" content="Why you cannot see a watermark in AI text. An interactive, first-principles guide to sampling, green lists, SynthID tournaments and statistical evidence."><meta property="og:image" content="https://isaee.xyz/og/ai-text-watermarking.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="article:published_time" content="2026-09-10"><meta property="article:author" content="Twinkle Garg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The invisible watermark"><meta name="twitter:description" content="Why you cannot see a watermark in AI text. Four interactive diagrams."><meta name="twitter:image" content="https://isaee.xyz/og/ai-text-watermarking.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Why you cannot see a watermark in AI text","name":"The invisible watermark","description":"An interactive, first-principles guide to AI text watermarking: sampling, green lists, SynthID tournaments and statistical evidence.","image":"https://isaee.xyz/og/ai-text-watermarking.png","datePublished":"2026-09-10","dateModified":"2026-09-10","author":{"@type":"Person","name":"Twinkle Garg","url":"https://isaee.xyz/"},"publisher":{"@type":"Person","name":"Twinkle Garg","url":"https://isaee.xyz/"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://isaee.xyz/interactive-blogs/ai-text-watermarking/"},"inLanguage":"en"}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="explainer.css?v=2"><script src="explainer.js?v=2" defer></script></head><body>
-<a class="skip" href="#article">Skip to article</a><div class="progress" aria-hidden="true"></div><header><a class="brand" href="/">isaee<span>.xyz</span></a><a href="/interactive-blogs/">Interactive blogs ↗</a><span class="eyebrow edition">FIELD NOTES / 001</span></header><main id="article">
-<section class="hero shell"><div><p class="eyebrow">Artificial intelligence, explained</p><h1>The invisible<br><em>watermark.</em></h1><p class="dek">Nothing hidden between the letters.<br>A pattern hidden in the choices.</p><p class="muted">An AI model can leave a signature in ordinary text. Follow a single word from a probability to a clue.</p><a class="start" href="#choice">Follow the next word ↓</a></div><div class="hero-art"><div class="art-meta"><span>LOOKS LIKE ORDINARY TEXT</span><span>01—14</span></div><div id="hero-sentence">The weather was calm and the evening felt warm as we walked back home.</div><button id="reveal" aria-pressed="false">Reveal the pattern ↗</button><p>Illustration only. These colours are not in the text.</p></div><div class="byline"><span>By <b>Twinkle Garg</b></span><span>10 September 2026</span><span>10-minute read · 4 interactive diagrams</span></div></section>
-<nav aria-label="Article chapters"><a href="#choice">01 Choice</a><a href="#mark">02 Mark</a><a href="#tournament">03 Tournament</a><a href="#detect">04 Detect</a><a href="#meaning">05 Interpret</a><a href="#limits">06 Limits</a></nav>
-<div class="prose intro"><p class="lead">If every answer had only one possible wording, there would be nowhere to put a watermark.</p><p>But language often leaves room. An evening might be <em>warm</em>, <em>pleasant</em> or <em>lovely</em>. A model can use those small choices to leave a repeatable statistical pattern, without inserting invisible characters or attaching metadata.</p><p>This is <strong>generation-time watermarking</strong>: the system participates while the text is written. A general AI-writing classifier instead tries to recognise patterns after the fact, without that generation key.</p><p>We’ll start with a green-list scheme, then build up to SynthID Text, the family of methods Anthropic says it uses for Claude’s watermark. These experiments are simplified teaching examples, not a detector for your text. <a class="cite" href="#s1">[1]</a></p></div>
-<section class="chapter shell" id="choice"><div class="explanation"><p class="eyebrow">01 / The raw material</p><h2>First, there has<br>to be a choice.</h2><p>A model generates <strong>tokens</strong>: words, word fragments or punctuation. Here, we treat each candidate word as one token.</p><p>It gives possible next tokens scores, called <em>logits</em>. A function such as softmax turns these into probabilities. A sampler then draws a token using those probabilities.</p><p>The most likely token need not win. Draw several times to see the difference between <strong>probability</strong> and <strong>certainty</strong>.</p><p>Then switch to the factual sentence. Almost all the probability sits on one answer. This is <strong>low entropy</strong>: little uncertainty, and little freedom for a watermark.</p></div><figure class="lab"><div class="lab-heading"><span>FIG. 01</span><h3>One sentence. Several possible futures.</h3></div><div class="segmented" role="group" aria-label="Example context"><button data-context="open" aria-pressed="true">Room to choose</button><button data-context="fact" aria-pressed="false">Almost certain</button></div><p class="sentence" id="choice-sentence">The evening felt …</p><div class="bars" id="choice-bars"></div><div class="actions"><button class="primary" id="sample">Draw the next token ↗</button><output id="sample-result" aria-live="polite">Try a draw</output></div><div class="history" id="history" aria-label="Recent draws"></div><figcaption>Illustrative probabilities, not measurements from Claude. A short run of random draws need not match the percentages.</figcaption></figure></section>
-<div class="pipeline shell"><span>CONTEXT</span><i>→</i><span>MODEL SCORES</span><i>→</i><span>PROBABILITIES</span><i>→</i><span class="accent">SAMPLER</span><i>→</i><span>NEXT TOKEN</span><p>The watermark enters at the selection step.</p></div>
-<section class="chapter shell" id="mark"><div class="explanation"><p class="eyebrow">02 / Make randomness repeatable</p><h2>Give the choices<br>a secret pattern.</h2><p>Imagine assigning candidates to a green or red list. Green does <em>not</em> mean better English. It means favoured by the watermark at this position.</p><p>The assignments come from a repeatable function of a <strong>key and recent tokens</strong>. Change the context and the colours can change. A detector with matching settings can reconstruct them later.</p><p>The hard version bans red tokens. That creates a strong signal, but banning the only sensible answer is dangerous. The soft version gives green tokens a boost, then normalises the probabilities again. Red tokens can still win. <a class="cite" href="#s2">[2]</a></p><p>Try all three modes, then change the assignment. There is no permanent list of “AI words”. A modest boost can preserve a strong favourite; a very large boost can overwhelm it.</p></div><figure class="lab"><div class="lab-heading"><span>FIG. 02</span><h3>Same words. A different chance.</h3></div><p class="sentence">The evening felt …</p><div class="segmented" role="group" aria-label="Watermark mode"><button data-mode="off" aria-pressed="true">Off</button><button data-mode="hard" aria-pressed="false">Hard ban</button><button data-mode="soft" aria-pressed="false">Soft boost</button></div><div class="legend"><span>Outline: original odds</span><span class="green">+ Green</span><span class="red">− Red</span></div><div class="bars" id="mark-bars"></div><label for="strength">Green-token multiplier <output id="strength-value">2×</output></label><input type="range" id="strength" min="1" max="6" step="0.5" value="2" disabled><div class="actions"><button id="recolour">Change assignment ↻</button><span id="assignment" class="micro">Assignment A</span></div><p class="result" id="mark-note" aria-live="polite"></p><figcaption>Four-token toy vocabulary. Multiplying green probabilities before normalisation is equivalent to adding the multiplier’s natural logarithm to their logits.</figcaption></figure></section>
-<aside class="prose pull"><p>“Plausible next word” and “fits the secret pattern” are two different scores.</p><span class="eyebrow">The distinction that makes the rest work</span></aside>
-<section class="chapter shell" id="tournament"><div class="explanation"><p class="eyebrow">03 / A more careful sampler</p><h2>Let the candidates<br>play a tournament.</h2><p>SynthID offers another way to use that freedom. Picture eight candidates sampled from the original probabilities, with repeats allowed.</p><p>Pair them up. Green beats red. If colours match, break the tie randomly. Recolour survivors with a new key-derived scoring function for the next round. Repeat until one token remains. <a class="cite" href="#s3">[3]</a></p><p>Follow the lines. Copies of the same token have the same colour within a round, but that colour can change between rounds.</p><p>Switch to <strong>Only Paris</strong>. If Paris has probability exactly 1, every candidate is Paris. The tournament cannot select anything else. At 99%, alternatives remain possible.</p><details><summary>Does a real system build a billion leaves?</summary><p>No. Our example has three rounds and eight leaves. The paper generally uses 30 rounds in its experiments, but the implementation computes equivalent probability updates without materialising 2³⁰ candidates. Thirty is not a confirmed Claude production setting.</p></details></div><figure class="lab tournament-lab"><div class="lab-heading"><span>FIG. 03</span><h3>Eight candidates → one next token</h3></div><div class="segmented" role="group" aria-label="Tournament context"><button data-bracket="open" aria-pressed="true">Several possibilities</button><button data-bracket="certain" aria-pressed="false">Only Paris</button></div><p class="bracket-context" id="bracket-context">The evening felt …</p><svg id="bracket" viewBox="0 0 600 390" role="img" aria-labelledby="bracket-title bracket-desc"><title id="bracket-title">A three-round token tournament</title><desc id="bracket-desc">Use Next round to follow the winners.</desc></svg><div class="round-controls"><button id="round-back" disabled>← Back</button><output id="round-count">Sampled · 0 / 3</output><button id="round-next">Next round →</button></div><p class="result" id="round-note" aria-live="polite"></p><figcaption>Green + beats red −; ties are random. A fixed replay of one valid tournament, not a live language model. Later rounds use fresh colour assignments.</figcaption></figure></section>
-<section class="proof shell"><div><p class="eyebrow">The surprising part</p><h2>A preference per key.<br>A balance across keys.</h2><p>Sampling candidates from the model does not, by itself, prove the final probabilities are unchanged. The balance comes from the symmetry of random scores.</p><p>Take one two-candidate match. A starts at 60%; B at 40%. A’s chance of winning depends on their colours:</p></div><div class="proof-grid"><div><span>A favoured</span><b>84%</b><small>A wins if either draw is A</small></div><div><span>B favoured</span><b>36%</b><small>A wins only if both draws are A</small></div><div><span>Both green</span><b>60%</b><small>Random tie-breaking</small></div><div><span>Both red</span><b>60%</b><small>The same fair tie rule</small></div><p>Four equally likely assignments, averaged:<br><strong>(84 + 36 + 60 + 60) ÷ 4 = 60%</strong></p></div><p class="proof-foot">This demonstrates one round with independent fair assignments. Sequence-level guarantees need further handling, including repeated-context masking. SynthID also offers configurations that trade some quality for stronger detection; preservation is not universal. <a href="#s3">[3]</a></p></section>
-<section class="chapter shell" id="detect"><div class="explanation"><p class="eyebrow">04 / Read the trace</p><h2>A clue in one word.<br>Evidence in many.</h2><p>The detector sees the text, not the tournament. It retokenises the passage and uses the matching key, recent context and algorithm settings to reconstruct scores for tokens that actually appeared.</p><p>Under an unwatermarked baseline, a fair binary score has expected value 0.5. A watermarked passage tends to score higher. Longer, varied passages provide more opportunities to see that difference.</p><p>This experiment isolates the statistical idea. Every square is one independent simulated observation. Increase the length, or replace observations with unwatermarked ones.</p><p>Real SynthID detection combines scores across rounds and eligible tokens, handles repetition, and supports methods such as learned Bayesian scoring. This coin model is <strong>not its production detector</strong>. <a class="cite" href="#s3">[3]</a></p></div><figure class="lab"><div class="lab-heading"><span>FIG. 04</span><h3>When does a pattern stand out?</h3></div><div class="segmented" role="group" aria-label="Simulated source"><button data-signal="marked" aria-pressed="true">Biased sample</button><button data-signal="ordinary" aria-pressed="false">Unwatermarked</button></div><div class="sliders"><div><label for="length">Observations <output id="length-value">120</output></label><input id="length" type="range" min="40" max="240" step="20" value="120"></div><div><label for="edits">Replaced <output id="edits-value">0%</output></label><input id="edits" type="range" min="0" max="100" step="10" value="0"></div></div><div id="evidence" aria-hidden="true"></div><div class="legend"><span class="green">● Green score</span><span class="red">□ Red score</span></div><div class="stats"><div><span>Green observations</span><strong id="green-count">—</strong></div><div><span>Chance of this many or more*</span><strong id="p-value">—</strong></div></div><p id="verdict" class="verdict" aria-live="polite"></p><button id="resample">Draw another sample ↻</button><figcaption>*Exact upper-tail binomial probability under independent fair scores. Biased draws use 65% green; replacements use 50%. This does not model a real paraphrasing attack or provider accuracy.</figcaption></figure></section>
-<section class="meaning shell" id="meaning"><p class="eyebrow">05 / Evidence has boundaries</p><h2>A statistical signal.<br>Not a verdict on a person.</h2><div class="meaning-grid"><article><span>+</span><h3>Signal detected</h3><p>The passage is unusually consistent with the tested mark. That can support a provider’s involvement, including substantial editing. It does not establish who wrote every word.</p></article><article><span>?</span><h3>No strong signal</h3><p>The text may be human-written, from another model, too short, repetitive or heavily edited. No detected watermark does not prove human authorship.</p></article><article><span>≠</span><h3>Probability is not authorship</h3><p>A 1% chance under the unwatermarked model is not a 99% probability that AI wrote the text. Interpretation needs calibrated error rates and context.</p></article></div><p class="muted small">A false positive flags unwatermarked text. A false negative misses a genuine mark. Neither disappears because a diagram looks convincing.</p></section>
-<section class="limits shell" id="limits"><div><p class="eyebrow">06 / Back in the real world</p><h2>What survives.<br>What doesn’t follow.</h2><p>Watermarking cannot certify that a passage is true, original or entirely written by one source.</p></div><div class="faq"><details open><summary>Does it change answer quality?</summary><p>The SynthID paper reports no statistically significant difference in user ratings across approximately 20 million Gemini responses in a live comparison. That supports the tested configuration, not a guarantee for every sentence. <a href="#s3">[3]</a></p></details><details><summary>What about short answers, facts and code?</summary><p>Short text offers few observations. Constrained outputs offer few choices. Both weaken detection. Code is not categorically exempt: comments and flexible parts can still carry a mark. <a href="#s1">[1]</a></p></details><details><summary>Can copying, editing or translation remove it?</summary><p>Copying the exact characters preserves a pattern carried by word choices. Edits can change both tokens and the context used to score nearby tokens. Paraphrasing, shortening and mixing sources can weaken the mark. A translation produced by a watermarking model may carry its own mark; survival of the original mark through another translator is a separate question. <a href="#s1">[1]</a></p></details><details><summary>Can a watermark identify me or my chat?</summary><p>Anthropic says its mark does not encode a person, organisation or conversation. That describes its scheme, not every possible watermark. Watermarks are also separate from a service’s logs and data policies. <a href="#s1">[1]</a></p></details><details><summary>Can I check any text with this page?</summary><p>No. These are educational simulations. A provider’s mark requires a matching detector. In its September 1, 2026 update, Anthropic described a detection API in private preview for eligible organisations. Access and model coverage may change. <a href="#s1">[1]</a></p></details><details><summary>Are local models unmarked?</summary><p>That depends on the generation setup. A local model can use a watermarking sampler too. Location alone does not determine whether output is marked. <a href="#s4">[4]</a></p></details></div></section>
-<section class="closing prose"><p class="eyebrow">The idea to take with you</p><p class="lead">The signature is not a hidden character.<br>It is a repeated preference.</p><p>Each choice looks ordinary. A key lets a detector search across those choices for a pattern. Understanding the pattern also means recognising when the evidence is too weak to conclude anything.</p><a class="start" href="#choice">Explore the experiments again ↑</a></section></main>
-<footer class="shell"><h2>Sources & method</h2><ol class="sources"><li id="s1"><a href="https://www.anthropic.com/news/claude-text-watermark">Anthropic · How Claude’s text watermark works</a><p>Provider-specific statements. August 14, updated September 1, 2026.</p></li><li id="s2"><a href="https://arxiv.org/abs/2301.10226">Kirchenbauer et al. · A Watermark for Large Language Models</a><p>2023 · Green-list methods and statistical detection.</p></li><li id="s3"><a href="https://www.nature.com/articles/s41586-024-08025-4">Dathathri et al. · Scalable watermarking for identifying large language model outputs</a><p>Nature, 2024 · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11499265/">Open-access full text ↗</a></p></li><li id="s4"><a href="https://github.com/google-deepmind/synthid-text">Google DeepMind · SynthID Text implementation</a><p>Configuration, sampling and repetition handling.</p></li></ol><p class="method">These experiments use a four-word vocabulary, a fixed three-round tournament and a separate independent-score simulation. They are not Claude outputs or a reproduction of its private detector. Further explanations: <a href="https://www.youtube.com/watch?v=FnAqruxx-QE">Code Bear</a> and <a href="https://www.youtube.com/watch?v=kVXp6UNVPTo">Computerphile</a>. Editorial inspiration: <a href="https://ig.ft.com/generative-ai/">FT’s transformer explainer</a>. Diagrams and interactive implementation created for isaee.xyz.</p><div class="footer-bottom"><a class="brand" href="/">isaee<span>.xyz</span></a><a href="/interactive-blogs/">← All interactive blogs</a><span>Fact-checked 10 September 2026</span></div></footer><noscript><p class="noscript">The complete explanation is readable here. Enable JavaScript to run the four interactive experiments.</p></noscript></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inside the dice roll · isaee.xyz</title>
+<meta name="description" content="How AI text watermarking actually works. An interactive, first-principles guide to sampling, green lists, SynthID tournament sampling and statistical detection.">
+<meta name="theme-color" content="#eef0ec">
+<link rel="canonical" href="https://isaee.xyz/interactive-blogs/ai-text-watermarking/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="isaee.xyz">
+<meta property="og:url" content="https://isaee.xyz/interactive-blogs/ai-text-watermarking/">
+<meta property="og:title" content="Inside the dice roll">
+<meta property="og:description" content="How AI text watermarking actually works. An interactive, first-principles guide to sampling, green lists, SynthID tournament sampling and statistical detection.">
+<meta property="og:image" content="https://isaee.xyz/og/ai-text-watermarking.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-09-10">
+<meta property="article:author" content="Twinkle Garg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inside the dice roll">
+<meta name="twitter:description" content="How AI text watermarking actually works. Five interactive diagrams.">
+<meta name="twitter:image" content="https://isaee.xyz/og/ai-text-watermarking.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Inside the dice roll","description":"How AI text watermarking actually works. An interactive, first-principles guide to sampling, green lists, SynthID tournament sampling and statistical detection.","image":"https://isaee.xyz/og/ai-text-watermarking.png","datePublished":"2026-09-10","dateModified":"2026-09-10","author":{"@type":"Person","name":"Twinkle Garg","url":"https://isaee.xyz/"},"publisher":{"@type":"Person","name":"Twinkle Garg","url":"https://isaee.xyz/"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://isaee.xyz/interactive-blogs/ai-text-watermarking/"},"inLanguage":"en"}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23FFDE00'/%3E%3Crect x='6' y='6' width='88' height='88' fill='none' stroke='%23000' stroke-width='8'/%3E%3Ctext x='50' y='72' font-size='60' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%23000'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;1,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="explainer.css?v=3">
+<script src="explainer.js?v=3" defer></script>
+</head>
+<body>
+<a class="skip" href="#s1">Skip to the article</a>
+<div id="prog"></div>
+<div class="topbar"><div class="in">
+  <a class="brand" href="/">isaee<span>.xyz</span></a>
+  <span class="sep">/</span>
+  <a class="up" href="/interactive-blogs/">Interactive blogs</a>
+  <span class="sep">/</span>
+  <b>Inside the dice roll</b>
+  <nav class="navsec" id="nav">
+    <a href="#s1">1 Problem</a><a href="#s2">2 Choosing</a><a href="#s3">3 Colour</a>
+    <a href="#s4">4 Tournament</a><a href="#s5">5 Why odds survive</a><a href="#s6">6 Detection</a><a href="#s7">7 Limits</a>
+  </nav>
+</div></div>
+
+<section class="hero">
+  <div class="eyebrow">Statistical text watermarking</div>
+  <h1>Inside the dice roll</h1>
+  <p class="stand">From 2 August 2026 the EU requires AI text to be machine detectable. Anthropic's answer adds nothing to Claude's words at all. It hides the mark in which words got picked.</p>
+  <div class="sent" style="margin-bottom:8px">my favourite tropical fruit is <span class="blank" id="heroBlank">&nbsp;</span></div>
+  <p class="byl">
+    <b>An interactive introduction</b> to statistical text watermarks, using green list methods and SynthID-Text as the worked examples. It does not cover metadata credentials such as C2PA, or classifier style "AI detectors", which work on completely different principles.<br>
+    Built from <a href="https://arxiv.org/abs/2301.10226">Kirchenbauer et al. 2023</a> and <a href="https://www.nature.com/articles/s41586-024-08025-4">Dathathri et al., Nature 2024</a>. All figures on this page are <span class="tag">illustrative</span> unless a source is named beside them. Published 10 September 2026.
+  </p>
+</section>
+
+<section class="prose" id="s1">
+  <h2><span class="num">01 / The problem</span>Text has almost nowhere to hide a signal</h2>
+  <p>Images offer many more places to distribute a subtle signal than short text does. A photograph carries millions of pixels, and a change spread thinly across them survives cropping and recompression while staying below the threshold most viewers would notice. A paragraph carries a few hundred tokens, and every one of them is load bearing. Change a word and you may change the meaning.</p>
+  <p>You could hide characters that do not print. Zero width joiners, unusual spaces, lookalike letters from another alphabet. But normalisation and cleanup tools strip those routinely, often without the user asking, so character based marks are fragile in ordinary use. Anything that survives has to live somewhere a copy and paste cannot reach.</p>
+  <p>Which leaves an odd question. How do you mark a piece of writing without putting anything into it? The answer is not in the words. It is one level up, in the process that chose them.</p>
+</section>
+
+<section class="scrolly" data-fig="A" id="s2">
+  <div class="steps">
+    <div class="step" data-i="0"><div class="card"><p class="chap">02 / Choosing a word</p><p>A language model does not write sentences. It writes one <b>token</b> at a time, and a token is often a fragment of a word rather than a whole one.</p></div></div>
+    <div class="step" data-i="1"><div class="card"><p>Given the text so far, the model scores every token in its vocabulary. Those raw scores are called <b>logits</b>. Passed through a softmax they become a probability distribution: how plausible is each token as the next one.</p><p class="illus">Four candidates shown. A real vocabulary holds tens of thousands.</p></div></div>
+    <div class="step" data-i="2"><div class="card"><p>Now the important part. The model does not simply take the top one. It <b>draws</b> from this distribution, so lychee at 0.30 really does win roughly three times in ten.</p><p>Press sample and watch the observed counts converge on the probabilities.</p></div></div>
+    <div class="step" data-i="3"><div class="card"><p>How much freedom there is at a given position has a name: <b>entropy</b>. Spread out probabilities mean high entropy and real choice.</p><p>Change the context and the freedom can vanish. After <span class="kw">the capital of France is</span> one token takes almost all the mass. That is low entropy, and nothing can be encoded there without breaking the sentence.</p></div></div>
+    <div class="step" data-i="4"><div class="card"><p>So the raw material for a watermark is not the text. It is the leftover freedom at each position, and how much of it exists depends entirely on what is being said.</p><p>Everything that follows is about spending that freedom without spending the quality.</p></div></div>
+  </div>
+  <div class="figwrap"><div class="stage"><div class="fit">
+    <div class="layer show" data-l="0"><div class="panel">
+      <div class="cap">The context</div>
+      <div class="sent" id="a-sent">my favourite tropical fruit is <span class="blank">&nbsp;</span></div>
+      <div class="ctrls" id="a-tok" style="gap:6px"></div>
+    </div></div>
+    <div class="layer" data-l="1"><div class="panel">
+      <div class="cap" id="a-cap">Next token distribution</div>
+      <div class="bars" id="a-bars"></div>
+      <div class="ctrls" id="a-ctrl" hidden>
+        <button class="btn pri" id="a-s1">Sample once</button>
+        <button class="btn" id="a-s100">Sample 100 times</button>
+        <button class="btn" id="a-reset">Reset</button>
+        <span class="tally" id="a-tally">0 draws</span>
+      </div>
+      <div class="illus">Probabilities from Figure 2 of the SynthID-Text paper. Draws simulated here.</div>
+    </div></div>
+  </div></div></div>
+</section>
+
+<section class="prose" id="s3">
+  <h2><span class="num">03 / The first idea</span>Colour the vocabulary, then prefer one colour</h2>
+  <p>In 2023 a University of Maryland group, with John Kirchenbauer as first author and Tom Goldstein as senior author, published the scheme that started this field. Before each token is chosen, split the whole vocabulary pseudorandomly into a green list and a red list, then push the model towards green.</p>
+  <p>The trick that makes it recoverable is the seed. Computers cannot produce true randomness on demand, so the split is generated from a seed, and the same seed always gives the same split. Build that seed from something a detector will also have later, namely the preceding tokens, combined with a secret key. Now the colouring can be replayed after the fact by anyone holding the key, and looks like noise to everyone else.</p>
+  <p>The paper offers two variants, and the difference between them is the whole argument.</p>
+</section>
+
+<section class="scrolly" data-fig="B">
+  <div class="steps">
+    <div class="step" data-i="0"><div class="card"><p class="chap">03 / Colouring</p><p>The seed is a hash of the recent context plus a <span class="kw k">secret key</span>. Same inputs, same colours, every time. This is the replay mechanism the detector depends on.</p></div></div>
+    <div class="step" data-i="1"><div class="card"><p>That seed splits the vocabulary into <span class="kw g">green</span> and <span class="kw r">red</span>. An even split in this example, though the share is a parameter.</p><p class="illus">A toy vocabulary of 32. The colouring shown is invented, not derived from a real key.</p></div></div>
+    <div class="step" data-i="2"><div class="card"><p>The <b>hard</b> variant simply bans red. Detection becomes trivial, because watermarked text is then entirely green.</p><p>Try the switch. Watch what happens to the low entropy case.</p></div></div>
+    <div class="step" data-i="3"><div class="card"><p>And there is the failure. Ban the only correct token and the model must write something false. This is a deliberately restrictive teaching example, not a deployed method.</p></div></div>
+    <div class="step" data-i="4"><div class="card"><p>The <b>soft</b> variant adds a fixed boost to green logits instead of banning red. With a modest boost a strongly preferred token stays overwhelmingly likely, so facts survive.</p><p>Drag the boost. Note that a large enough boost will still overturn the leader, so this is a dial, not a guarantee.</p></div></div>
+    <div class="step" data-i="5"><div class="card"><p>Soft marking buys back quality but concedes something: it genuinely reshapes the distribution everywhere, including where the model was already sure. The size of the boost is a judgement call with no principled value.</p><p>That is the opening Google set out to close.</p></div></div>
+  </div>
+  <div class="figwrap"><div class="stage"><div class="fit">
+    <div class="layer show" data-l="0"><div class="panel">
+      <div class="cap">Seeding the colours</div>
+      <div class="ctrls" style="font-family:'JetBrains Mono',monospace;font-size:14px;gap:10px">
+        <span class="tk sm">recent context</span><span>+</span><span class="tk sm k">secret key</span>
+        <span style="color:var(--ink3)">&#8594;</span><span class="tk sm">hash</span>
+        <span style="color:var(--ink3)">&#8594;</span><span class="tk sm">seed</span>
+        <span style="color:var(--ink3)">&#8594;</span><span class="tk sm g">green</span><span class="tk sm r">red</span>
+      </div>
+      <p class="ui" style="font-size:15px;color:var(--ink2);max-width:560px;margin:0">Deterministic, so it replays exactly. Unpredictable, because the key is secret. Anyone without the key reconstructs a different, meaningless colouring.</p>
+    </div></div>
+    <div class="layer" data-l="1"><div class="panel">
+      <div class="cap">Vocabulary split at this position</div>
+      <div class="ctrls" id="b-vocab" style="gap:6px;max-width:640px"></div>
+      <div class="illus">Illustrative colouring, not generated from a real key.</div>
+    </div></div>
+    <div class="layer" data-l="2"><div class="panel">
+      <div class="cap" id="b-cap">Effect on the distribution</div>
+      <div class="sent" id="b-sent" style="font-size:18px">my favourite tropical fruit is <span class="blank">&nbsp;</span></div>
+      <div class="bars" id="b-bars"></div>
+      <div class="ctrls">
+        <span class="seg" id="b-mode">
+          <button data-m="off" aria-pressed="true">Off</button>
+          <button data-m="hard" aria-pressed="false">Hard ban</button>
+          <button data-m="soft" aria-pressed="false">Soft boost</button>
+        </span>
+        <span class="seg" id="b-ctx">
+          <button data-c="fruit" aria-pressed="true">High entropy</button>
+          <button data-c="paris" aria-pressed="false">Low entropy</button>
+        </span>
+      </div>
+      <div class="ctrls" id="b-boostwrap" hidden>
+        <span class="slider">boost &delta; <input type="range" id="b-boost" min="0" max="10" step="0.5" value="2"><span id="b-boostv">2.0</span></span>
+      </div>
+      <div class="ui" id="b-verdict" style="font-size:15px;color:var(--ink2);min-height:2.6em;max-width:600px"></div>
+    </div></div>
+  </div></div></div>
+</section>
+
+<section class="prose" id="s4">
+  <h2><span class="num">04 / Tournament sampling</span>Never touch the odds, only the winner</h2>
+  <p>In October 2024 Google DeepMind published SynthID-Text in Nature. Anthropic says Claude uses a version of this approach. Its move is to stop editing the distribution altogether. Instead of reweighting, it draws several honest candidates from the model's own probabilities and runs a knockout tournament between them, refereeing each match with the secret key.</p>
+  <p>The example below is the one in Figure 2 of the paper, reproduced faithfully. Watch what the survivors do: they are not all the same token, ties are resolved by coin flip, and each round is refereed by a different function.</p>
+</section>
+
+<section class="scrolly" data-fig="C">
+  <div class="steps">
+    <div class="step" data-i="0"><div class="card"><p class="chap">04 / The tournament</p><p>Draw <b>2<sup>m</sup></b> candidates from the model's real distribution. Here m is 3, so eight seats. They are drawn independently, so tokens repeat in proportion to their probability.</p><p class="illus">Seats and outcomes reproduce Figure 2 of the SynthID-Text paper.</p></div></div>
+    <div class="step" data-i="1"><div class="card"><p>Round one is refereed by <span class="kw">g<sub>1</sub></span>, which assigns every token a 1 or a 0 from the seed. In each pair the higher score wins. <b>Equal scores are a genuine tie</b>, broken at random, and four of these matches are ties.</p></div></div>
+    <div class="step" data-i="2"><div class="card"><p>Four survivors, and they are a mix: durian, mango, lychee, mango. Round two uses a <b>different</b> function <span class="kw">g<sub>2</sub></span>, because the round index is folded into the hash. A token scored 1 a moment ago can score 0 now.</p></div></div>
+    <div class="step" data-i="3"><div class="card"><p>Two survivors. The final is refereed by <span class="kw">g<sub>3</sub></span>. Mango scores 1, lychee scores 0, so mango is emitted.</p><p>The whole bracket runs again for the very next token, with a new seed from the shifted context.</p></div></div>
+    <div class="step" data-i="4"><div class="card"><p>Now the low entropy case, and the reason this design matters. When one token takes essentially all the probability mass, nearly every seat fills with that token and it wins whatever the referee says.</p><p class="illus">With p = 0.99, all eight seats are that token about 92 percent of the time. Only at p = 1 is it certain.</p></div></div>
+    <div class="step" data-i="5"><div class="card"><p>The paper generally uses <b>m = 30</b> layers in its experiments. That is a large bracket, though the implementation does not literally build a billion leaves.</p><p>More layers add evidence per token, but not without limit: each layer consumes some of the available entropy, so deeper layers carry a weaker mark.</p></div></div>
+  </div>
+  <div class="figwrap"><div class="stage"><div class="fit">
+    <div class="layer show" data-l="0"><div class="panel">
+      <div class="cap" id="c-cap">Tournament sampling, m = 3</div>
+      <div class="brk" id="c-brk"></div>
+      <div class="illus" id="c-illus">Reproduces Figure 2, Dathathri et al., Nature 2024.</div>
+    </div></div>
+  </div></div></div>
+</section>
+
+<section class="prose" id="s5">
+  <h2><span class="num">05 / The claim that needs proving</span>Why the odds survive the tournament</h2>
+  <p>Here is the part that is usually asserted and rarely shown. It is tempting to say every candidate was an honest sample, so the output must be honest too. That does not follow. Under any single key the tournament genuinely does bend the selection probabilities. Green tokens really are more likely to win.</p>
+  <p>What actually holds is subtler and more interesting: averaged over the key's possible colourings, the original probability comes back exactly. Two tokens, one round, and four equally likely colourings are enough to see it.</p>
+</section>
+
+<section class="scrolly" data-fig="D">
+  <div class="steps">
+    <div class="step" data-i="0"><div class="card"><p class="chap">05 / Preserving the odds</p><p>Take two tokens. <b>A</b> has probability 0.6, <b>B</b> has 0.4. Draw two candidates independently and play one match.</p></div></div>
+    <div class="step" data-i="1"><div class="card"><p>If A is green and B is red, A wins unless <b>both</b> draws came up B. That is 1 &minus; 0.4<sup>2</sup> = <b>0.84</b>. A is strongly favoured.</p></div></div>
+    <div class="step" data-i="2"><div class="card"><p>If the colouring flips, A wins only when <b>both</b> draws are A: 0.6<sup>2</sup> = <b>0.36</b>. A is now badly hurt. So yes, a particular key really does distort the odds.</p></div></div>
+    <div class="step" data-i="3"><div class="card"><p>When both tokens share a colour there is no preference at all and the tie is broken at random, which returns A its original <b>0.6</b>. That happens in two of the four colourings.</p></div></div>
+    <div class="step" data-i="4"><div class="card"><p>Average the four equally likely colourings and the distortions cancel exactly: <b>0.6</b>, the probability we started with.</p><p>That is the real claim. Not that any single output is unbiased, but that the scheme is unbiased in expectation over the key.</p></div></div>
+    <div class="step" data-i="5"><div class="card"><p>The paper is careful here, and so should we be. This two competitor configuration is <b>single token</b> non distortionary. Preserving whole sequences additionally needs repeated context masking, and the paper notes that stronger non distortion trades against detectability.</p><p class="illus">Derivation is exact for this two token, one round case. It does not by itself establish sequence level guarantees.</p></div></div>
+  </div>
+  <div class="figwrap"><div class="stage"><div class="fit">
+    <div class="layer show" data-l="0"><div class="panel">
+      <div class="cap">One match, two tokens, four possible colourings</div>
+      <table class="deriv" id="d-tab">
+        <thead><tr><th>A</th><th>B</th><th>A wins when</th><th>P(A wins)</th></tr></thead>
+        <tbody>
+          <tr data-r="0"><td><span class="tk sm g">A</span></td><td><span class="tk sm r">B</span></td><td>at least one draw is A</td><td>1 &minus; 0.4&sup2; = 0.84</td></tr>
+          <tr data-r="1"><td><span class="tk sm r">A</span></td><td><span class="tk sm g">B</span></td><td>both draws are A</td><td>0.6&sup2; = 0.36</td></tr>
+          <tr data-r="2"><td><span class="tk sm g">A</span></td><td><span class="tk sm g">B</span></td><td>tie, broken at random</td><td>0.60</td></tr>
+          <tr data-r="3"><td><span class="tk sm r">A</span></td><td><span class="tk sm r">B</span></td><td>tie, broken at random</td><td>0.60</td></tr>
+          <tr class="avg" data-r="4"><td colspan="3">Mean over the four colourings</td><td id="d-avg">0.60</td></tr>
+        </tbody>
+      </table>
+      <div class="illus">Exact arithmetic for this two token, one round case.</div>
+    </div></div>
+  </div></div></div>
+</section>
+
+<section class="prose" id="s6">
+  <h2><span class="num">06 / Detection</span>What a positive result does and does not mean</h2>
+  <p>Detection never sees the bracket. It cannot know which candidates were drawn, which matches were ties, or who won a coin flip. It sees the finished text and it holds the key, and that turns out to be enough, because it can ask a statistical question instead of a forensic one.</p>
+  <p>Retokenise the passage. For each position, rebuild the seed from the preceding context and the key, replay all m scoring functions, and record what the token that actually appeared scored. Average those values across the passage. The paper's score is exactly this mean g value.</p>
+</section>
+
+<section class="scrolly" data-fig="E">
+  <div class="steps">
+    <div class="step" data-i="0"><div class="card"><p class="chap">06 / Detection</p><p>Every token contributes m replayed verdicts. Under the simplified null model, each has an expected value of 0.5, so an unwatermarked passage averages near a half.</p></div></div>
+    <div class="step" data-i="1"><div class="card"><p>A watermarked passage drifts above it, because its tokens had to keep winning matches where green was favoured. Not to 1: ties, low entropy positions and deeper layers all pull it back.</p><p class="illus">Dot patterns are authored for illustration. They are not a replay of the bracket above.</p></div></div>
+    <div class="step" data-i="2"><div class="card"><p>Compare the observed mean against the unwatermarked baseline, scaled by the spread. Kirchenbauer's paper uses a z score with a threshold of 4.</p><p>Under an ideal null, z above 4 corresponds to roughly one false alarm in 30,000 passages. That is a property of the normal tail, not a measured production rate.</p></div></div>
+    <div class="step" data-i="3"><div class="card"><p>Two things must be counted honestly. Only <b>generated</b> tokens carry evidence, so a prompt pasted in front of the text is not evidence. And the passage must be long enough: short answers, yes or no replies and rigid formats simply do not contain enough decisions.</p></div></div>
+    <div class="step" data-i="4"><div class="card"><p>Which leaves the interpretation, and this is where most coverage goes wrong. The result is <b>provider specific statistical evidence</b>, not a verdict on authorship.</p><p>Both error directions are real, and the absence of a mark proves nothing at all.</p></div></div>
+  </div>
+  <div class="figwrap"><div class="stage"><div class="fit">
+    <div class="layer show" data-l="0"><div class="panel">
+      <div class="cap">Replayed verdicts per token</div>
+      <div class="ctrls" id="e-dots" style="gap:10px 8px;max-width:640px"></div>
+      <div class="illus">Authored illustration. Not a replay of the tournament shown earlier.</div>
+    </div></div>
+    <div class="layer" data-l="1"><div class="panel">
+      <div class="cap">Mean score against the unwatermarked baseline</div>
+      <div class="axis" id="e-axis">
+        <div class="hump" style="left:14%;width:38%"><svg viewBox="0 0 100 66" preserveAspectRatio="none"><path d="M0 66 C30 66,40 5,50 5 S70 66,100 66 Z" fill="var(--ink3)" opacity=".3"/></svg></div>
+        <div class="hump" id="e-h2" style="left:48%;width:38%;opacity:0;transition:opacity .55s"><svg viewBox="0 0 100 66" preserveAspectRatio="none"><path d="M0 66 C30 66,40 5,50 5 S70 66,100 66 Z" fill="var(--green)" opacity=".45"/></svg></div>
+        <div class="tick" style="left:8%">0.42</div><div class="tick" style="left:33%">0.50</div><div class="tick" style="left:67%">0.58</div><div class="tick" style="left:96%">0.64</div>
+        <div class="pin" id="e-pin" style="left:33%"><span id="e-pinl">unwatermarked baseline &middot; 0.50</span></div>
+      </div>
+      <div class="stats">
+        <div>mean score<b id="e-mean">0.50</b></div>
+        <div>eligible tokens<b id="e-n">640</b></div>
+        <div>z score<b id="e-z">0.2</b></div>
+        <div>reading<b id="e-v" style="font-size:19px">no evidence</b></div>
+      </div>
+      <div class="illus">Illustrative values chosen to show the comparison, not measured output.</div>
+    </div></div>
+    <div class="layer" data-l="2"><div class="panel">
+      <div class="cap">Both directions of error</div>
+      <div class="errgrid">
+        <div class="hd">Mark reported</div><div class="hd">No mark reported</div>
+        <div><b>Usually generated by that provider</b>Long, discursive text carries the strongest signal.</div>
+        <div><b>Tells you almost nothing</b>Could be human. Could be another model. Could be edited, translated or too short.</div>
+        <div><b>False positive</b>Human writing can drift high by chance. The threshold sets how often.</div>
+        <div><b>False negative</b>Paraphrase, heavy editing, low entropy content and short passages all erase it.</div>
+      </div>
+      <p class="ui" style="font-size:15px;color:var(--ink2);max-width:620px;margin:0">A p value answers "how surprising is this score if the text were unwatermarked". It is not the probability that a given person wrote it.</p>
+    </div></div>
+  </div></div></div>
+</section>
+
+<section class="prose" id="s7">
+  <h2><span class="num">07 / Limits</span>Where the mark thins out or disappears</h2>
+  <table class="limits">
+    <thead><tr><th>Situation</th><th>What happens to the mark</th></tr></thead>
+    <tbody>
+      <tr><td>Long discursive prose</td><td>Strongest case. Many high entropy positions, plenty of evidence.</td></tr>
+      <tr><td>Short replies, yes or no, multiple choice</td><td>Too few decisions to carry a signal. Anthropic notes the mark is sparser on factual passages with fewer choices.</td></tr>
+      <tr><td>Code</td><td>Weak. Syntax is near deterministic; the freedom sits mostly in comments and names. Anthropic describes minimal application to code where exact outputs are required.</td></tr>
+      <tr><td>Light editing</td><td>Survives. The score degrades in proportion to how much was changed.</td></tr>
+      <tr><td>Paraphrase through another model</td><td>Effectively erased. The context that seeds every colouring is gone.</td></tr>
+      <tr><td>Locally run open models</td><td>No mark. Nothing sits in the sampling loop but the operator.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">Questions</span>The things people actually ask</h2>
+  <details><summary>Can I check a piece of text myself?</summary><p>No. Replaying the colouring requires the secret key. Anthropic's detection API was, as of this page's publication date, in private preview for eligible parties under EU law such as regulators, law enforcement, media and fact checkers, plus enterprises with compliance obligations. Check the source for current status.</p></details>
+  <details><summary>Does the watermark identify me?</summary><p>Anthropic states the mark does not identify a person, an organisation or a conversation. It is evidence about which system produced the text, not about who prompted it.</p></details>
+  <details><summary>Does it make Claude's writing worse?</summary><p>The Nature study compared roughly 20 million watermarked and unwatermarked Gemini responses on user feedback and found differences of 0.01 percent on thumbs up and 0.02 percent on thumbs down, described as statistically insignificant. That is strong evidence from one large deployment, not a universal guarantee for every output.</p></details>
+  <details><summary>Is this the same as an AI detector?</summary><p>No, and the difference matters. A classifier guesses from style and is wrong often. This checks a specific provider's cryptographic mark. It answers a narrow question well rather than a broad question badly.</p></details>
+  <details><summary>Why now?</summary><p>EU AI Act Article 50 transparency obligations took effect on 2 August 2026, requiring providers to mark synthetic content in a machine readable way. Anthropic's rollout note uses that same date as its dividing line for existing models.</p></details>
+</section>
+
+<footer>
+  <h3>Sources</h3>
+  <a href="https://arxiv.org/abs/2301.10226">Kirchenbauer, Geiping, Wen, Katz, Miers, Goldstein, A Watermark for Large Language Models, 2023</a><br>
+  <a href="https://www.nature.com/articles/s41586-024-08025-4">Dathathri et al., Scalable watermarking for identifying large language model outputs, Nature 634, 818 to 823, 23 October 2024</a><br>
+  <a href="https://www.anthropic.com/news/claude-text-watermark">Anthropic, How Claude's text watermarking works</a><br>
+  <a href="https://artificialintelligenceact.eu/article/50/">EU AI Act, Article 50</a>
+  <h3 style="margin-top:18px">Note on figures</h3>
+  The tournament bracket reproduces Figure 2 of the Nature paper. The probability derivation in section 5 is exact arithmetic. Everything else, including sampled draws, colourings, dot patterns and detection scores, is authored illustration and labelled as such beside the graphic. No production detection output is shown anywhere on this page.
+</footer>
+<noscript><p style="max-width:660px;margin:24px auto;padding:0 24px;font-family:'Inter Tight',sans-serif">The full explanation is readable without JavaScript. Enable it to run the five interactive figures.</p></noscript>
+</body>
+</html>
