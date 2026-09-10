@@ -1,140 +1,18 @@
-
-(function(){
-  const $=(s,r=document)=>r.querySelector(s);
-  const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
-  const prog=$('#progress');
-  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
-
-  /* hero */
-  const heroWords=['This','sentence','was','written','by','a','machine','and','you','cannot','tell'];
-  const heroCols=['g','g','r','g','g','r','g','g','r','g','g'];
-  const ht=$('#heroTiles');
-  heroWords.forEach(w=>ht.appendChild(el('span','tile big',w)));
-  setTimeout(()=>{[...ht.children].forEach((t,i)=>setTimeout(()=>t.classList.add(heroCols[i]),i*140));},900);
-
-  /* ---------- Figure A ---------- */
-  const aWords=['The','quick','brown'];
-  const aTiles=$('#a-tiles'), aSent=$('#a-sent');
-  aWords.forEach(w=>aTiles.appendChild(el('span','tile ghost',w)));
-  const cand1=[['fox',42],['dog',18],['cat',12],['hare',7],['bear',5],['leaf',3],['other',13]];
-  const cand2=[['jumps',35],['runs',22],['leaps',14],['sat',9],['darted',6],['was',4],['other',10]];
-  const aBars=$('#a-bars');
-  function buildBars(container,data,cls){container.innerHTML='';data.forEach(([n,p])=>{const b=el('div','bar'+(cls?' '+cls:''));const nm=el('div','name');nm.appendChild(el('span','tile sm',n));const tr=el('div','track');const f=el('div','fill');f.dataset.w=p;tr.appendChild(f);b.appendChild(nm);b.appendChild(tr);b.appendChild(el('div','pct',p+'%'));container.appendChild(b);});}
-  function growBars(container){[...container.querySelectorAll('.fill')].forEach(f=>{f.style.width=Math.min(100,Number(f.dataset.w))+'%';});}
-  buildBars(aBars,cand1);
-  const layersA=[...$('#figA').querySelectorAll('.layer')];
-  const showLayer=(layers,i)=>layers.forEach((l,k)=>{l.classList.toggle('show',k===i);l.setAttribute('aria-hidden',String(k!==i));});
-  function figA(i){
-    if(i<=1){showLayer(layersA,0);aSent.style.display=i===0?'block':'none';[...aTiles.children].forEach(t=>{t.classList.toggle('ghost',i===0);t.classList.remove('win');});}
-    if(i===1){[...aTiles.children].forEach(t=>t.classList.remove('ghost'));}
-    if(i>=2){showLayer(layersA,1);}
-    if(i===2){buildBars(aBars,cand1);requestAnimationFrame(()=>growBars(aBars));}
-    if(i===3){buildBars(aBars,cand1);requestAnimationFrame(()=>growBars(aBars));aBars.children[0].classList.add('win');aBars.children[0].querySelector('.tile').classList.add('win');}
-    if(i===4){$('#a-bars').previousElementSibling.textContent='Next token after "The quick brown fox"';buildBars(aBars,cand2);requestAnimationFrame(()=>growBars(aBars));}
-    else{$('#a-bars').previousElementSibling.textContent='Next token candidates';}
-  }
-
-  /* ---------- Figure B ---------- */
-  const vocab=['fox','dog','cat','hare','bear','leaf','wolf','deer','sky','and','the','of','river','stone','quiet','loud','jumps','runs','over','under','bird','tree','wind','rain','coat','bag','bell','road','moon','sun','hill','song'];
-  const col1=[1,0,1,0,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1,0,0,1,1,0,1,0,1,0,0,1];
-  const col2=[0,1,1,1,0,0,1,0,0,1,1,0,1,0,1,1,1,0,0,1,0,1,1,0,0,1,0,1,0,1,1,0];
-  const bGrid=$('#b-grid'), bSent=$('#b-sent');
-  vocab.forEach(w=>bGrid.appendChild(el('span','tile sm',w)));
-  const bt=[...bGrid.children];
-  const layersB=[...$('#figB').querySelectorAll('.layer')];
-  const detWords=['The','quick','brown','fox','jumps','over','the','sleepy','dog','and','vanishes','into','the','trees'];
-  const bDet=$('#b-detect');detWords.forEach(w=>bDet.appendChild(el('span','tile sm',w)));
-  buildBars($('#b-paris'),[['Paris',99],['Lyon',0.4],['Nice',0.3],['Rome',0.2],['other',0.1]]);
-  function colour(cols,ban){bt.forEach((t,k)=>{t.className='tile sm '+(cols[k]?'g':'r')+(ban&&!cols[k]?' ban':'');});}
-  function figB(i){
-    bSent.textContent=i>=4?'The quick brown fox':'The quick brown';
-    if(i<=2||i===4){showLayer(layersB,0);}
-    if(i===0){bt.forEach(t=>t.className='tile sm');}
-    if(i===1){colour(col1,false);}
-    if(i===2){colour(col1,true);bt[0].className='tile sm win';}
-    if(i===3){showLayer(layersB,1);$('#b-prev').textContent='brown';}
-    if(i===4){colour(col2,true);}
-    if(i===5){showLayer(layersB,2);[...bDet.children].forEach((t,k)=>{t.className='tile sm';t.classList.add('g');});}
-    if(i===6){showLayer(layersB,3);const pb=$('#b-paris');requestAnimationFrame(()=>{growBars(pb);pb.children[0].classList.add('r');pb.children[0].querySelector('.tile').classList.add('r');pb.children[0].querySelector('.tile').classList.add('ban');[1,2,3].forEach(k=>{pb.children[k].classList.add('g');pb.children[k].querySelector('.tile').classList.add('g');});});}
-  }
-
-  /* ---------- Figure C ---------- */
-  const cB=$('#c-bracket'), cSent=$('#c-sent');
-  const seats=['fox','fox','dog','fox','cat','fox','dog','fox'];
-  // A token has ONE colour per round, including all repeated seats.
-  const R1=[0,3,5,7], R1cols=[1,1,0,1,0,1,0,1];
-  const R2cols=[0,0,0,0], R2=[0,2];
-  const R3cols=[1,1], R3=0;
-  const cols=[el('div','bcol'),el('div','bcol'),el('div','bcol'),el('div','bcol')];
-  const heads=['Sampled','Round 1','Round 2','Winner'];
-  const colTiles=[[],[],[],[]];
-  cols.forEach((c,k)=>{const h=el('div','rhead',heads[k]);c.appendChild(h);const inner=el('div','col r'+(k||1));c.appendChild(inner);const n=[8,4,2,1][k];for(let j=0;j<n;j++){const t=el('span','tile ghost','');inner.appendChild(t);colTiles[k].push(t);}cB.appendChild(c);});
-  cols[0].querySelector('.col').className='col r1';cols[1].querySelector('.col').className='col r2';cols[2].querySelector('.col').className='col r3';cols[3].querySelector('.col').className='col';
-  function setSeats(arr){colTiles[0].forEach((t,k)=>{t.textContent=arr[k];t.className='tile';});}
-  function fill(k,names,colsArr,winners){colTiles[k].forEach((t,j)=>{t.textContent=names[j];t.className='tile'+(colsArr?(colsArr[j]?' g':' r'):'');if(winners&&!winners.includes(j))t.classList.add('dim');});}
-  function clearFrom(k){for(let m=k;m<4;m++){colTiles[m].forEach(t=>{t.className='tile ghost';});cols[m].querySelector('.rhead').classList.toggle('show',false);}}
-  function head(k,on){cols[k].querySelector('.rhead').classList.toggle('show',on);}
-  const layersC=[...$('#figC').querySelectorAll('.layer')];
-  const dotWords=['The','quick','brown','fox','jumps','over','the','sleepy','dog','and','vanishes','into','the','trees','before','dawn'];
-  const dotsEl=$('#c-dots');
-  const rng=(seed)=>()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
-  function buildDots(bias){dotsEl.innerHTML='';const r=rng(bias?7:3);dotWords.forEach(w=>{const d=el('div','dtok');d.appendChild(el('span','tile sm',w));const row=el('div','drow');let g=0;for(let k=0;k<30;k++){const isG=r()<(bias?0.62:0.5);if(isG)g++;row.appendChild(el('span','d'+(isG?' g':'')));}d.appendChild(row);d.appendChild(el('span','avg',(g/30).toFixed(2)));dotsEl.appendChild(d);});}
-  function figC(i){
-    if(i<=4){showLayer(layersC,0);}
-    cSent.textContent=i===4?'The capital of France is':'The quick brown';
-    if(i===0){setSeats(seats);head(0,true);clearFrom(1);}
-    if(i===1){fill(0,seats,R1cols,R1);head(0,true);fill(1,R1.map(k=>seats[k]),null);head(1,true);clearFrom(2);}
-    if(i===2){fill(0,seats,R1cols,R1);head(0,true);fill(1,R1.map(k=>seats[k]),R2cols,R2);head(1,true);fill(2,R2.map(k=>seats[R1[k]]),null);head(2,true);clearFrom(3);}
-    if(i===3){fill(0,seats,R1cols,R1);fill(1,R1.map(k=>seats[k]),R2cols,R2);fill(2,R2.map(k=>seats[R1[k]]),R3cols,[R3]);head(2,true);head(0,true);head(1,true);fill(3,['fox'],null);head(3,true);colTiles[3][0].classList.add('win');cSent.textContent='The quick brown';}
-    if(i===4){const p=Array(8).fill('Paris');fill(0,p,Array(8).fill(0),R1);fill(1,p.slice(0,4),Array(4).fill(1),R2);fill(2,p.slice(0,2),[0,0],[0]);fill(3,['Paris'],null);colTiles[3][0].classList.add('win');[0,1,2,3].forEach(k=>head(k,true));}
-    if(i===5){showLayer(layersC,1);buildDots(false);$('#c-dots-note').textContent='A human wrote this. Every verdict is a coin flip; the averages hover around 0.50.';}
-    if(i===6){showLayer(layersC,1);buildDots(true);$('#c-dots-note').textContent='Watermarked. The chosen tokens keep landing green. Averages drift toward 0.60.';}
-    if(i===7){showLayer(layersC,2);const pin=$('#c-pin');pin.style.left='40%';$('#c-pin-label').textContent='human · 0.50';$('#c-mean').textContent='0.50';$('#c-z').textContent='baseline';$('#c-verdict').textContent='baseline';$('#c-hump2').style.opacity='0';
-      {pin.style.left='70%';$('#c-pin-label').textContent='watermarked · 0.60';$('#c-mean').textContent='0.60';$('#c-z').textContent='above baseline';$('#c-verdict').textContent='illustrative signal';$('#c-hump2').style.opacity='1';}}
-  }
-
-  /* Scroll state is calculated from position, so fast jumps and reverse scrolling agree. */
-  const figs={A:figA,B:figB,C:figC};
-  const sections=[...document.querySelectorAll('.scrolly')].map(sec=>{
-    const steps=[...sec.querySelectorAll('.step')], figure=sec.querySelector('.figure');
-    const legend=el('div','legend');
-    legend.append(el('span','','Green / favoured'),el('span','','Red / not favoured'));
-    figure.appendChild(legend);
-    const controls=el('div','figure-controls'), prev=el('button','','← Back'), next=el('button','','Next →'), count=el('span');
-    count.setAttribute('aria-live','polite');prev.type=next.type='button';
-    prev.setAttribute('aria-label','Previous diagram step');next.setAttribute('aria-label','Next diagram step');
-    controls.append(prev,count,next);figure.appendChild(controls);
-    const state={sec,steps,figure,prev,next,count,index:-1};
-    function go(delta){
-      const index=Math.max(0,Math.min(steps.length-1,state.index+delta));
-      const line=activationLine(state);
-      const top=steps[index].getBoundingClientRect().top+window.scrollY;
-      window.scrollTo({top:Math.max(0,top-line+24),behavior:'instant'});
-      activate(state,index);
-    }
-    prev.addEventListener('click',()=>go(-1));next.addEventListener('click',()=>go(1));
-    return state;
-  });
-  function activationLine(state){return matchMedia('(max-width:860px)').matches?Math.min(innerHeight-40,state.figure.offsetHeight+40):innerHeight*.46;}
-  function activate(state,index){
-    if(state.index===index)return;
-    state.index=index;
-    state.steps.forEach((s,k)=>s.classList.toggle('on',k===index));
-    figs[state.sec.dataset.fig](index);
-    state.sec.querySelector('.stage').scrollTop=0;
-    state.count.textContent=(index+1)+' / '+state.steps.length;
-    state.prev.disabled=index===0;state.next.disabled=index===state.steps.length-1;
-  }
-  let pending=false;
-  function update(){
-    pending=false;
-    sections.forEach(state=>{
-      const line=activationLine(state);let index=0;
-      state.steps.forEach((s,k)=>{if(s.getBoundingClientRect().top<=line)index=k;});
-      activate(state,index);
-    });
-  }
-  function schedule(){if(!pending){pending=true;requestAnimationFrame(update);}}
-  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);
-  update();
+(()=>{'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],words=['warm','pleasant','lovely','cold'],ps=[.5,.3,.15,.05];
+function select(attr,value){$$(`[${attr}]`).forEach(b=>b.setAttribute('aria-pressed',String(b.getAttribute(attr)===value)));}
+function bars(target,names,values,colours,original){const root=$(target);if(root.children.length!==names.length)root.replaceChildren(...names.map(()=>{const row=document.createElement('div');row.className='bar-row';row.innerHTML='<span class="bar-word"></span><div class="bar-track"><span class="bar-fill"></span><span class="bar-original"></span></div><span class="bar-pct"></span>';return row}));[...root.children].forEach((row,i)=>{row.className='bar-row'+(colours?' '+(colours[i]?'green':'red'):'');row.querySelector('.bar-word').textContent=(colours?(colours[i]?'+ ':'− '):'')+names[i];row.querySelector('.bar-fill').style.width=values[i]*100+'%';const outline=row.querySelector('.bar-original');outline.hidden=!original;outline.style.width=(original||values)[i]*100+'%';row.querySelector('.bar-pct').textContent=(values[i]*100).toFixed(values[i]*100%1?1:0)+'%';});}
+const hero=$('#hero-sentence');hero.replaceChildren(...hero.textContent.split(' ').flatMap((w,i)=>{const t=document.createElement('span');t.textContent=w;t.className=i%3===1?'hero-red':'hero-green';return[t,document.createTextNode(' ')];}));$('#reveal').addEventListener('click',()=>{const on=$('.hero-art').classList.toggle('revealed');$('#reveal').setAttribute('aria-pressed',String(on));$('#reveal').textContent=on?'Hide the pattern ↗':'Reveal the pattern ↗';});
+let context='open',draws=[];function choice(){const fact=context==='fact';bars('#choice-bars',fact?['Paris','Lyon','Nice','Other']:words,fact?[.99,.004,.003,.003]:ps);$('#choice-sentence').textContent=fact?'The capital of France is …':'The evening felt …';draws=[];$('#history').replaceChildren();$('#sample-result').textContent='Try a draw';}$$('[data-context]').forEach(b=>b.addEventListener('click',()=>{context=b.dataset.context;select('data-context',context);choice()}));$('#sample').addEventListener('click',()=>{const values=context==='fact'?[.99,.004,.003,.003]:ps;let r=Math.random(),i=0;while(i<values.length-1&&r>=values[i])r-=values[i++];const word=(context==='fact'?['Paris','Lyon','Nice','Other']:words)[i];$('#sample-result').textContent=word;draws.push(word);draws=draws.slice(-12);$('#history').replaceChildren(...draws.map(w=>{const t=document.createElement('span');t.textContent=w;return t}));});choice();
+let mode='off',assignment=0;const assignments=[[0,1,1,0],[1,0,0,1]];function mark(){const colours=assignments[assignment],factor=Number($('#strength').value),raw=ps.map((p,i)=>p*(mode==='off'?1:mode==='hard'?(colours[i]?1:0):(colours[i]?factor:1))),sum=raw.reduce((a,b)=>a+b,0);bars('#mark-bars',words,raw.map(p=>p/sum),colours,ps);$('#strength').disabled=mode!=='soft';$('#strength-value').textContent=factor+'×';$('#assignment').textContent='Assignment '+(assignment?'B':'A');$('#mark-note').textContent=mode==='off'?'Off: the colours exist, but selection ignores them.':mode==='hard'?'Hard ban: red tokens have zero probability. The remaining probability is redistributed to green.':`Soft boost: multiply green probabilities by ${factor}, then normalise all four values to sum to 100%.`;}
+$$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;select('data-mode',mode);mark()}));$('#strength').addEventListener('input',mark);$('#recolour').addEventListener('click',()=>{assignment=1-assignment;mark()});mark();
+const levels=[['cold','warm','pleasant','warm','lovely','pleasant','warm','warm'],['cold','warm','pleasant','warm'],['warm','pleasant'],['warm']],scores=[{cold:1,warm:1,pleasant:0,lovely:0},{cold:0,warm:0,pleasant:1,lovely:0},{cold:0,warm:1,pleasant:0,lovely:1}],winners=[[0,3,5,6],[1,2],[0]],notes=['Start with independent samples. More likely tokens can appear more than once.','Round 1: cold wins a tie; warm beats pleasant; pleasant wins a tie; one warm wins against its identical copy.','Round 2: warm wins a red–red tie. In the other match, green pleasant beats red warm.','Round 3: warm is now green and pleasant is red. Warm wins and becomes the next token.'];let round=0,certain=false;
+const ns='http://www.w3.org/2000/svg';function svg(tag,attrs,text){const e=document.createElementNS(ns,tag);Object.entries(attrs||{}).forEach(([k,v])=>e.setAttribute(k,v));if(text)e.textContent=text;return e;}
+function tournament(){const root=$('#bracket');root.querySelectorAll('g,path,text').forEach(e=>e.remove());const xs=[5,163,321,479],ys=[[40,84,128,172,216,260,304,348],[62,150,238,326],[106,282],[194]];for(let col=0;col<4;col++){root.append(svg('text',{x:xs[col]+49,y:17,'text-anchor':'middle',class:'round-label'},['SAMPLED','ROUND 1','ROUND 2','WINNER'][col]));if(col>round)continue;if(col>0)ys[col].forEach((y,j)=>{for(const from of[j*2,j*2+1])root.append(svg('path',{d:`M ${xs[col-1]+105} ${ys[col-1][from]+15} H ${xs[col]-20} V ${y+15} H ${xs[col]}`,class:'connector'}));});levels[col].forEach((word,j)=>{const scored=col<round&&col<3,g=certain?col%2:scores[col]?.[word],loser=scored&&!winners[col].includes(j);const group=svg('g',{class:'node'+(scored?(g?' green':' red'):'')+(loser?' dim':'')+(col===3?' winner':'')});group.append(svg('rect',{x:xs[col],y:ys[col][j],width:105,height:30}));group.append(svg('text',{x:xs[col]+52.5,y:ys[col][j]+20,'text-anchor':'middle'},(certain?'Paris':word)+(scored?(g?' +':' −'):'')));root.append(group);});}$('#round-count').textContent=(round?'Round '+round:'Sampled')+' · '+round+' / 3';$('#round-back').disabled=round===0;$('#round-next').textContent=round===3?'Replay ↻':'Next round →';$('#round-note').textContent=certain?(round===0?'Probability 1: every draw is Paris. There is no alternative candidate.':'Every match is between identical tokens. Whatever the colours and tie-breaks, Paris survives.'):notes[round];$('#bracket-context').textContent=certain?'The capital of France is …':'The evening felt …';$('#bracket-desc').textContent=$('#round-note').textContent;}
+const mobileBracket=document.createElement('div');mobileBracket.className='mobile-bracket';$('#bracket').after(mobileBracket);
+const drawTournament=tournament;tournament=function(){drawTournament();mobileBracket.replaceChildren();const col=Math.max(0,round-1);const label=document.createElement('p');label.className='micro';label.textContent=round?'ROUND '+round+' · PAIR BY PAIR':'EIGHT SAMPLED CANDIDATES';mobileBracket.append(label);const matches=document.createElement('div');matches.className='mobile-matches';for(let j=0;j<levels[col].length;j+=2){const pair=document.createElement('div');pair.className='mobile-pair';for(const k of[j,j+1]){const w=levels[col][k],g=certain?col%2:scores[col][w],t=document.createElement('span');t.textContent=(certain?'Paris':w)+(round?(g?' +':' −'):'');if(round)t.className=g?'green':'red';pair.append(t);}if(round){const win=document.createElement('b');win.textContent='↓ '+(certain?'Paris':levels[col+1][j/2]);pair.append(win);}matches.append(pair);}mobileBracket.append(matches);};
+$('#round-back').addEventListener('click',()=>{round=Math.max(0,round-1);tournament()});$('#round-next').addEventListener('click',()=>{round=(round+1)%4;tournament()});$$('[data-bracket]').forEach(b=>b.addEventListener('click',()=>{certain=b.dataset.bracket==='certain';round=0;select('data-bracket',b.dataset.bracket);tournament()}));tournament();
+let signal='marked',seed=729;function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}function tail(n,k){let term=Math.pow(.5,n),sum=0;for(let j=0;j<=n;j++){if(j>=k)sum+=term;term*=(n-j)/(j+1);}return Math.min(1,sum);}
+function evidence(){const n=Number($('#length').value),edit=Number($('#edits').value)/100,r=rng(seed);let green=0;const nodes=[];for(let i=0;i<n;i++){const base=r()<(signal==='marked'?.65:.5),replace=r()<edit,fresh=r()<.5,g=replace?fresh:base;green+=Number(g);const e=document.createElement('span');if(g)e.className='g';nodes.push(e);}$('#evidence').replaceChildren(...nodes);$('#length-value').textContent=n;$('#edits-value').textContent=Math.round(edit*100)+'%';$('#green-count').textContent=green+' / '+n;const p=tail(n,green);$('#p-value').textContent=p<.0001?'< 0.01%':(p*100).toFixed(2)+'%';$('#verdict').textContent=p<.01?'Excess green in this simulation (p < 1%). Evidence against the fair-score baseline, not proof of authorship.':'Inconclusive at this example’s 1% threshold. A weak signal does not establish human authorship.';}
+$$('[data-signal]').forEach(b=>b.addEventListener('click',()=>{signal=b.dataset.signal;select('data-signal',signal);evidence()}));$('#length').addEventListener('input',evidence);$('#edits').addEventListener('input',evidence);$('#resample').addEventListener('click',()=>{seed+=173;evidence()});evidence();let queued=false;function progress(){queued=false;const d=document.documentElement;$('.progress').style.width=(d.scrollHeight>innerHeight?scrollY/(d.scrollHeight-innerHeight)*100:0)+'%';}addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(progress)}},{passive:true});progress();
 })();
