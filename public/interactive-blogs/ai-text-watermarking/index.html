@@ -47,15 +47,19 @@
   <h1>Why you cannot see a watermark in AI text</h1>
   <p class="standfirst">From 2 August 2026 the EU requires AI generated text to be machine detectable. Anthropic's answer adds nothing to Claude's words at all. There are no invisible characters and no hidden metadata. The mark lives somewhere stranger: inside the dice rolls that chose the words.</p>
   <div class="tiles" id="heroTiles"></div>
+  <p class="illus" style="margin-top:14px">Illustration only. The colours show a pattern a detector holding the key could compute. They are not in the text.</p>
   <p class="byline"><b>An interactive introduction</b> to statistical text watermarks, using green list methods and SynthID-Text as the worked examples. It does not cover metadata credentials such as C2PA, or classifier style "AI detectors", which work on entirely different principles.<br>
   Built from <a href="https://arxiv.org/abs/2301.10226">Kirchenbauer et al. 2023</a>, <a href="https://www.nature.com/articles/s41586-024-08025-4">Dathathri et al., Nature 2024</a> and <a href="https://www.anthropic.com/news/claude-text-watermark">Anthropic's rollout note</a>. Figures are <span class="tag">illustrative</span> unless a source is named beside them.<br>
   <b>About 12 minutes.</b> Published 10 September 2026.</p>
 </section>
 
 <section class="prose" id="c1">
-  <p class="lede">Images offer many more places to distribute a subtle signal than short text does. A photograph carries millions of pixels, and a change spread thinly across them can survive cropping and recompression while staying below the threshold most viewers would notice. A paragraph carries a few hundred tokens, and every one of them is load bearing. Change a word and you may change the meaning. "The capital of France is Paris" cannot quietly become "The capital of France is Lyon" just to carry a signature.</p>
+  <p class="lede">Ask Claude for a few paragraphs and paste them into an email. Read them back as closely as you like. There is nothing odd there: no strange spacing, no hidden symbols, no tag buried in the file. It reads exactly like something a person could have typed. Yet a detector holding the right secret key can look at that same text and find statistical evidence that it came from Claude.</p>
+  <p>So where is the mark?</p>
+  <p>The word <i>watermark</i> points us the wrong way. It suggests something you could find if you looked hard enough, like a faint logo across a photograph or a pattern buried in its pixels. That works for images because they have room to spare. A photograph carries millions of pixels, and a change spread thinly across them can survive cropping and recompression while staying below the threshold most viewers would notice.</p>
+  <p>Text has no such room. A paragraph carries a few hundred tokens, and every one of them is load bearing. Change a word and you may change the meaning. "The capital of France is Paris" cannot quietly become "The capital of France is Lyon" just to carry a signature.</p>
   <p>You could hide characters that do not print: zero width joiners, unusual spaces, lookalike letters borrowed from another alphabet. But normalisation and cleanup tools strip those routinely, often without anyone asking them to, so character based marks are fragile in ordinary use. Anything that survives has to live somewhere a copy and paste cannot reach.</p>
-  <p>Which leaves an odd question. How do you mark a piece of writing without putting anything into it? The answer is not in the words at all. It is one level up, in the process that chose them.</p>
+  <p>Which leaves an odd question. How do you mark a piece of writing without putting anything into it? The answer is not in the words at all. It is one level up, in the process that chose them. To find it, we need to slow down and watch a model choose a single word.</p>
 </section>
 
 <section class="scrolly" data-fig="A" id="c2">
@@ -89,7 +93,7 @@
 
 <section class="prose" id="c3">
   <h2><span class="num">03 / The first idea</span>Colour the vocabulary, then prefer one colour</h2>
-  <p>In 2023 a University of Maryland group, with John Kirchenbauer as first author and Tom Goldstein as senior author, published the scheme that started this field. Before each token is chosen, split the whole vocabulary pseudorandomly into a green list and a red list, then push the model towards green.</p>
+  <p>That leftover freedom is what the first serious attempt set out to spend. In 2023 a University of Maryland group, with John Kirchenbauer as first author and Tom Goldstein as senior author, published the scheme that started this field. Before each token is chosen, split the whole vocabulary pseudorandomly into a green list and a red list, then push the model towards green.</p>
   <p>The trick that makes it recoverable later is the seed. Computers cannot produce true randomness on demand, so the split comes from a seed, and the same seed always gives the same split. Build that seed from something a detector will also have, namely the preceding tokens, combined with a secret key. Now the colouring can be replayed after the fact by anyone holding the key, and looks like noise to everyone else.</p>
   <p>The paper offers two variants, and the difference between them is the whole argument.</p>
 </section>
@@ -144,7 +148,7 @@
 
 <section class="prose" id="c4">
   <h2><span class="num">04 / Tournament sampling</span>Never touch the odds, only the winner</h2>
-  <p>In October 2024 Google DeepMind published SynthID-Text in Nature. Anthropic says Claude uses a version of this approach. Its move is to stop editing the distribution altogether. Instead of reweighting anything, it draws several honest candidates from the model's own probabilities and runs a knockout tournament between them, refereeing each match with the secret key.</p>
+  <p>The answer came in October 2024, when Google DeepMind published SynthID-Text in Nature. Anthropic says Claude uses a version of this approach. Its move is to stop editing the distribution altogether. Instead of reweighting anything, it draws several honest candidates from the model's own probabilities and runs a knockout tournament between them, refereeing each match with the secret key.</p>
   <p>Watch what the survivors do below. They are not all the same token, ties are resolved by coin flip, and every round is refereed by a different function.</p>
 </section>
 
@@ -168,6 +172,7 @@
 
 <section class="prose" id="c5">
   <h2><span class="num">05 / The claim that needs proving</span>Why the odds survive the tournament</h2>
+  <p>Go back to that bracket for a moment. Fox was the likeliest word, and cat won. If the referee can overturn the model's favourite, isn't the watermark quietly changing what gets written?</p>
   <p>Here is the part that is usually asserted and rarely shown. It is tempting to say every candidate was an honest sample, so the output must be honest too. That does not follow. Under any single key the tournament genuinely does bend the selection probabilities, and green tokens really are more likely to win.</p>
   <p>What actually holds is subtler and more interesting. Averaged over the key's possible colourings, the original probability comes back exactly. Two tokens, one round and four equally likely colourings are enough to see it.</p>
 </section>
@@ -201,6 +206,7 @@
 
 <section class="prose" id="c6">
   <h2><span class="num">06 / Detection</span>What a positive result does and does not mean</h2>
+  <p>That is the balance the whole scheme rests on. Averaged over every possible key, the odds come back intact. But for the one key actually in use, green tokens keep winning a little more often than chance would allow. That small, consistent lean is the mark, and it is exactly what a detector goes looking for.</p>
   <p>The detector never sees the bracket. It cannot know which candidates were drawn, which matches were ties, or who won a coin flip. It sees the finished text and it holds the key, and that turns out to be enough, because it can ask a statistical question instead of a forensic one.</p>
   <p>Retokenise the passage. At each position rebuild the seed from the preceding context and the key, replay all the scoring functions, and record what the token that actually appeared scored. Average those values across the passage.</p>
 </section>
@@ -296,19 +302,20 @@
     <li><b>It can fail.</b> Yes or no answers, multiple choice, lists of facts, very short replies. Not enough freedom, not enough tokens, no signal. A long discursive answer carries it easily.</li>
     <li><b>Removing it is work.</b> The colouring depends on the previous few tokens, so you would have to change roughly one word in every three or four on a rolling basis. Paraphrasing through another model erases it outright.</li>
     <li><b>You cannot check it yourself.</b> Replaying the colouring needs the secret key. Anthropic's detection API was in private preview at the time of writing, for eligible parties under EU law such as regulators, law enforcement, media and fact checkers, plus enterprises with compliance obligations.</li>
-    <li><b>Local models carry none of it.</b> Run a model on your own machine and there is nobody in the sampling loop but you.</li>
+    <li><b>Local models carry no provider's mark.</b> Run a model on your own machine and there is nobody in the sampling loop but you, unless you add a watermarking sampler yourself.</li>
   </ol>
 
   <h2><span class="num">Limits</span>Where the mark thins out</h2>
+  <p>Those are the headlines. Here is how the mark holds up in the situations people actually meet.</p>
   <table class="limits">
     <thead><tr><th>Situation</th><th>What happens to the mark</th></tr></thead>
     <tbody>
       <tr><td>Long discursive prose</td><td>Strongest case. Many high entropy positions, plenty of evidence.</td></tr>
       <tr><td>Short or rigid replies</td><td>Too few decisions. Anthropic notes the mark is sparser on factual passages with fewer choices.</td></tr>
-      <tr><td>Code</td><td>Weak. Syntax is near deterministic, and the freedom sits mostly in comments and names. Anthropic describes minimal application to code where exact outputs are required.</td></tr>
+      <tr><td>Code</td><td>Weak. Syntax is near deterministic, and the freedom sits mostly in comments and names.</td></tr>
       <tr><td>Light editing</td><td>Survives, with the score degrading in proportion to how much changed.</td></tr>
       <tr><td>Paraphrase through another model</td><td>Effectively erased. The context that seeds every colouring is gone.</td></tr>
-      <tr><td>Locally run open models</td><td>No mark at all.</td></tr>
+      <tr><td>Locally run open models</td><td>No provider's mark. Nothing is in the sampling loop unless whoever runs the model adds a watermarking sampler.</td></tr>
     </tbody>
   </table>
 
@@ -316,12 +323,12 @@
   <details><summary>Does the watermark identify me?</summary><p>Anthropic states the mark does not identify a person, an organisation or a conversation. It is evidence about which system produced the text, not about who prompted it.</p></details>
   <details><summary>Does it make the writing worse?</summary><p>The Nature study compared roughly 20 million watermarked and unwatermarked Gemini responses on user feedback and found differences of 0.01 percent on thumbs up and 0.02 percent on thumbs down, described as statistically insignificant. That is strong evidence from one large deployment, not a universal guarantee for every output.</p></details>
   <details><summary>What if I wrote half of it myself?</summary><p>The score is an average across the passage, so mixed authorship lands between the two distributions. A long generated section with light human editing still reads clearly. A few generated paragraphs inside a mostly human document dilute towards the baseline and can fall under the threshold. The test also cannot point at which sentences carried the mark, only at the passage as a whole, so it does not tell you where the machine writing sits.</p></details>
-  <details><summary>What happens if the text is translated?</summary><p>Translation regenerates every token in a different language, a different tokenizer and a different context, so the seeds that produced every colouring are gone. Expect the mark to be destroyed, in the same way paraphrasing through a second model destroys it. This follows from the mechanism rather than from a published measurement.</p></details>
+  <details><summary>What happens if the text is translated?</summary><p>Translation regenerates every token in a different language, a different tokenizer and a different context, so the seeds that produced every colouring are gone. Expect the mark to be destroyed, in the same way paraphrasing through a second model destroys it. This follows from the mechanism rather than from a published measurement. One catch: if a watermarking model does the translating, the new text carries that model's own mark instead.</p></details>
   <details><summary>Does it work on code?</summary><p>Weakly. Syntax is close to deterministic, so most positions offer no freedom to encode anything. What freedom exists sits in comments, names and the ordering of independent statements, which is also the first thing to disappear when the code is cleaned up. Anthropic describes minimal application to code where exact outputs are required.</p></details>
   <details><summary>Is this the same as an AI detector?</summary><p>No, and the difference matters. A classifier guesses from style and is wrong often. This checks a specific provider's cryptographic mark. It answers a narrow question well rather than a broad question badly.</p></details>
   <details><summary>Why is this happening now?</summary><p>EU AI Act Article 50 transparency obligations took effect on 2 August 2026, requiring providers to mark synthetic content in a machine readable way. Anthropic's rollout note uses that same date as the dividing line for existing models.</p></details>
 
-  <p style="margin-top:2.2em">So the next time someone claims they can spot AI writing by its em dashes, remember where the real signature sits. Not in the words, but in the thousands of tiny dice rolls that chose them.</p>
+  <p style="margin-top:2.2em">Go back to those paragraphs in the email. Nothing was hidden in them and nothing was added. Every word was an ordinary choice. The signature was never in the words themselves, but in thousands of tiny dice rolls that all leaned, ever so slightly, the same way. So the next time someone claims they can spot AI writing by its em dashes, you will know where the real mark sits.</p>
 </section>
 
 <footer>
