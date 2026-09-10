@@ -34,7 +34,32 @@ jobs:
           chmod 600 ~/.ssh/isaee
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           tar -czf - -C dist . | ssh -i ~/.ssh/isaee -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes isaee-deploy@167.71.232.107
-      - name: Verify the deployed article
+      - name: Verify the deployed release
         run: |
-          curl --fail --retry 3 --retry-delay 3 http://167.71.232.107/interactive-blogs/ai-text-watermarking/ -o /tmp/article.html
-          grep -q 'The invisible watermark' /tmp/article.html
+          set -euo pipefail
+          BASE=http://167.71.232.107
+          get() { curl --fail --silent --show-error --retry 3 --retry-delay 3 "$@"; }
+
+          # Article renders and carries its current headline.
+          get "$BASE/interactive-blogs/ai-text-watermarking/" -o /tmp/article.html
+          grep -q 'Why you cannot see a watermark in AI text' /tmp/article.html
+
+          # The explainer assets must be referenced and reachable, or the page
+          # renders while every interactive figure is silently dead.
+          grep -q 'explainer.js' /tmp/article.html
+          get -o /dev/null "$BASE/interactive-blogs/ai-text-watermarking/explainer.js"
+          get -o /dev/null "$BASE/interactive-blogs/ai-text-watermarking/explainer.css"
+
+          # The site CSP is script-src 'self', so every <script> must either load
+          # from src= or be a non-executable JSON-LD data block. An inline script
+          # would be blocked at runtime with no build-time error.
+          if grep -o '<script[^>]*>' /tmp/article.html \
+             | grep -v -e 'src=' -e 'application/ld+json' | grep -q .; then
+            echo "Inline <script> found; CSP script-src 'self' would block it." >&2
+            exit 1
+          fi
+
+          # Rest of the site still serves.
+          for path in / /interactive-blogs/ /robots.txt /sitemap.xml; do
+            get -o /dev/null "$BASE$path"
+          done
