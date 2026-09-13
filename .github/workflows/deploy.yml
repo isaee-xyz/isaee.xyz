@@ -19,6 +19,8 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Audit sorting implementations
+        run: node research/sorting/audit.mjs
       - name: Build static website
         run: npm run build
         env:
@@ -63,3 +65,5 @@ jobs:
           for path in / /interactive-blogs/ /robots.txt /sitemap.xml; do
             get -o /dev/null "$BASE$path"
           done
+          curl --fail --retry 3 --retry-delay 3 http://167.71.232.107/interactive-blogs/sorting/ -o /tmp/sorting.html
+          grep -q 'A little order' /tmp/sorting.html

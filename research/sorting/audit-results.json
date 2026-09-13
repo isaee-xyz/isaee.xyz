@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-13",
+  "totalAlgorithmCases": 17280,
+  "perMethod": {
+    "insertion": 1133,
+    "selection": 1133,
+    "bubble": 1133,
+    "merge": 1133,
+    "quick": 1133,
+    "heap": 1133,
+    "shell": 1133,
+    "cocktail": 1133,
+    "comb": 1133,
+    "gnome": 1133,
+    "counting": 1133,
+    "radix": 1133,
+    "pancake": 1133,
+    "fung": 1133,
+    "oddEven": 1133,
+    "bitonic": 285
+  },
+  "checks": [
+    "Order and record identity preservation",
+    "Stable duplicate order where claimed",
+    "All permutations through length 6 (power-of-two restriction for bitonic)",
+    "256 binary duplicate patterns of length 8",
+    "Trace counter consistency and completion",
+    "Insertion example counts",
+    "Fung prefix-and-maximum invariant for all 120 permutations of length 5",
+    "Unique HTML IDs and valid source anchors",
+    "74 source-backed atlas entries and 20 guided steps"
+  ],
+  "limits": [
+    "Finite tests do not prove correctness for unbounded inputs",
+    "Historical sources support stated attributions; frontier proofs and external performance benchmarks not independently reproduced",
+    "Browser measurements are local educational implementations, not product internals"
+  ]
+}

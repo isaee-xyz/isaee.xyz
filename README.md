@@ -47,6 +47,16 @@ The former Story section is replaced with an Interactive Blogs feature.
 - Library: `/interactive-blogs/`
 - First topic: `/interactive-blogs/ai-text-watermarking/`
 - Article source: `public/interactive-blogs/ai-text-watermarking/`
+- Sorting and structural thinking: `/interactive-blogs/sorting/`
+- Sorting research and audit: `research/sorting/`
+
+The sorting essay includes 20 guided steps, 74 sourced atlas entries, 16 executable
+teaching algorithms, everyday examples, and worker-based local timings. To regenerate
+the static content after editing its research data, run `python3 research/sorting/build_content.py`
+then `python3 research/sorting/render_page.py`. Algorithm verification is
+`node research/sorting/audit.mjs`. Production directory links can be checked with
+`npm run build` followed by `npm run preview`; Vite's development SPA fallback does
+not resolve the static blog directory index URLs in the same way.
 
 These are real static directories with `index.html` files, so direct links and refreshes
 work without SPA rewrites on Apache, Nginx, and DigitalOcean static hosting. Scripts
