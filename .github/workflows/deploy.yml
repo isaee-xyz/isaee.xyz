@@ -69,6 +69,6 @@ jobs:
           done
           curl --fail --retry 3 --retry-delay 3 http://167.71.232.107/interactive-blogs/sorting/ -o /tmp/sorting.html
           grep -q 'This looks wrong' /tmp/sorting.html
-          for asset in journey.js journey-model.js journey.css landscape.svg vendor/anime.esm.min.js; do
+          for asset in scroll-story.js scroll-story.css journey.js journey-model.js journey.css landscape.svg vendor/anime.esm.min.js; do
             get -o /dev/null "$BASE/interactive-blogs/sorting/$asset"
           done

@@ -50,7 +50,9 @@ The former Story section is replaced with an Interactive Blogs feature.
 - Sorting and structural thinking: `/interactive-blogs/sorting/`
 - Sorting research and audit: `research/sorting/`
 
-The sorting essay includes a playable mystery, a shared-picture comparison wall,
+The default sorting story advances five pinned illustrations while scrolling, with
+18 narrative stages, backward navigation and reduced-motion support. The optional
+playground includes a playable mystery, a shared-picture comparison wall,
 constraint challenges, program testing, a pancake puzzle, 20 optional guided steps,
 74 sourced atlas entries, 16 executable
 teaching algorithms, everyday examples, and worker-based local timings. To regenerate

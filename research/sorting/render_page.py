@@ -59,7 +59,7 @@ for k,v in replacements.items():page=page.replace(k,v)
 assert '__' not in page
 # The discovery journey is the default reading path. Existing detailed traces and
 # twenty guided technical steps remain accessible as an optional reference.
-journey=(root/'research/sorting/journey.html').read_text()
+journey=(root/'research/sorting/scroll-story.html').read_text()+'<details class="s-playground" id="practice"><summary>Try it yourself: the hands-on playground<small>All 16 methods, picture controls, puzzles and your own tiny program. Optional exploration.</small></summary>'+(root/'research/sorting/journey.html').read_text()+'</details>'
 start=page.index('<section class="hero shell">')
 end=page.index('<section class="history shell"')
 reference=page[start:end]
@@ -68,10 +68,13 @@ page=page[:start]+journey+'<details class="reference-lessons" id="technical-lab"
 a=page.index('<section class="takeaways shell"');b=page.index('<footer class="sources shell"',a)
 page=page[:a]+page[b:]
 page=page.replace('<title>A little order, a different way to think · isaee.xyz</title>','<title>This looks wrong. It still sorts. · isaee.xyz</title>')
-page=page.replace('<link rel="stylesheet" href="sorting.css">','<link rel="stylesheet" href="sorting.css"><link rel="stylesheet" href="journey.css">')
-page=page.replace('<script type="module" src="sorting.js"></script>','<script type="module" src="sorting.js"></script><script type="module" src="journey.js"></script>')
+page=page.replace('<link rel="stylesheet" href="sorting.css">','<link rel="stylesheet" href="sorting.css"><link rel="stylesheet" href="journey.css"><link rel="stylesheet" href="scroll-story.css">')
+page=page.replace('<script type="module" src="sorting.js"></script>','<script type="module" src="sorting.js"></script><script type="module" src="journey.js"></script><script type="module" src="scroll-story.js"></script>')
 page=page.replace('74 ways to approach<br>the same question.','74 methods, variants<br>and related ideas.')
 page=page.replace('<meta name="theme-color"', '<meta property="og:title" content="This looks wrong. It still sorts."><meta property="og:description" content="Solve a sorting mystery, rebuild one picture 16 ways, and discover why algorithms matter."><meta property="og:url" content="https://isaee.xyz/interactive-blogs/sorting/"><meta property="og:type" content="article"><meta name="twitter:card" content="summary"><meta name="theme-color"')
+# The guided cover is the sole top-level heading.
+first=page.index('</h1>')+5
+page=page[:first]+page[first:].replace('<h1>', '<h2>').replace('</h1>', '</h2>')
 out.joinpath('index.html').write_text(page)
 out.joinpath('content.js').write_text('export const DATA = '+json.dumps(data,ensure_ascii=False)+';\n')
 out.joinpath('favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#f6f1e8"/><path fill="#bc432b" d="M10 38h10v16H10zm17-14h10v30H27zm17-14h10v44H44z"/></svg>')
