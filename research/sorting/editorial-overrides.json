@@ -1,0 +1,258 @@
+{
+  "Insertion sort": {},
+  "Binary insertion sort": {},
+  "Selection sort": {},
+  "Bubble sort": {},
+  "Cocktail shaker sort": {
+    "use": "A teaching comparison with bubble sort when small values need to travel left as well as large values right."
+  },
+  "Comb sort": {
+    "use": "A study of whether moving distant inversions early reduces later adjacent swaps on the same input.",
+    "average": "Depends on input distribution and the shrink policy; the displayed quadratic worst-case bound is not an average."
+  },
+  "Gnome sort": {
+    "use": "A compact way to express insertion-like repair using a cursor that walks forward and backward."
+  },
+  "Shellsort": {
+    "use": "An array sort with constant auxiliary storage, when the selected gap sequence suits the workload.",
+    "average": "Depends on the gap sequence as well as the distribution of inputs."
+  },
+  "Merge sort": {},
+  "Bottom-up merge sort": {
+    "use": "A merge-based implementation that should use iterative passes rather than recursive calls."
+  },
+  "Natural merge sort": {
+    "use": "A collection already organised into ascending runs, where recognising those runs avoids rebuilding all order.",
+    "average": "Depends on the number and lengths of runs and the merge schedule.",
+    "cost": "O(n log r) with pairwise merge passes; O(n) for one run"
+  },
+  "Quicksort": {},
+  "Three-way quicksort": {
+    "use": "A list containing many repeated keys, where equal values can be removed from further recursive sorting."
+  },
+  "Dual-pivot quicksort": {
+    "use": "An implementation study of partitioning into three regions and the memory scans those partitions require.",
+    "average": "Depends on pivot selection, duplicates and the surrounding hybrid implementation."
+  },
+  "Heapsort": {},
+  "Smoothsort": {
+    "use": "A memory-constrained setting where adaptation to existing order is worth more involved heap bookkeeping.",
+    "average": "Depends on pre-existing order; its best and worst bounds describe different ends of that range."
+  },
+  "Tree sort": {
+    "use": "Records being inserted into an ordered search structure that will later be traversed in key order.",
+    "average": "Depends on the tree’s balancing policy and insertion order."
+  },
+  "Tournament sort": {
+    "use": "Repeatedly selecting the next record while retaining comparisons from earlier rounds in a tournament tree.",
+    "average": "O(n log n) is also an upper bound on average work in the usual tournament-tree model."
+  },
+  "Cycle sort": {
+    "average": "Depends on how destination ranks are obtained; the common comparison-ranked variant spends quadratic work finding them."
+  },
+  "Patience sorting": {
+    "average": "Depends on the pile structure and the search/extraction implementation; the efficient version has O(n log n) total work."
+  },
+  "Strand sort": {
+    "use": "A linked-list exercise in removing increasing subsequences and merging them into an accumulated output.",
+    "average": "Depends on how long the extracted strands are and how they are merged."
+  },
+  "Ford–Johnson / merge-insertion": {
+    "use": "Small inputs whose comparisons are expensive enough to justify a carefully scheduled insertion process.",
+    "average": "The classic objective is worst-case comparison count; average comparisons require an input model."
+  },
+  "Counting sort": {},
+  "LSD radix sort": {},
+  "MSD radix sort": {
+    "average": "Depends on shared prefixes, key lengths, radix and how each recursive bucket is processed.",
+    "cost": "Key-length, radix and recursive-bucket dependent"
+  },
+  "Bucket sort": {
+    "use": "Numeric keys with a known useful distribution, so ordered ranges can divide the work into small local sorts.",
+    "average": "Expected linear work needs an appropriate distribution and bucket count; a crowded bucket changes the cost."
+  },
+  "Histogram sort": {
+    "use": "A distribution pipeline that must know each bucket’s size before assigning contiguous output space.",
+    "average": "Depends on bucket occupancy and the method used to finish each bucket."
+  },
+  "Pigeonhole sort": {
+    "use": "Records whose integer keys occupy a small range and can be collected into one container per possible key.",
+    "average": "The usual scan-and-collect procedure costs O(n + k) for all inputs in the stated key range."
+  },
+  "American flag sort": {
+    "use": "Digit-based grouping where a full second record array is undesirable and stability is not required.",
+    "average": "Depends on key lengths, radix and the distribution of prefixes."
+  },
+  "Flashsort": {
+    "use": "Numeric data where interpolation yields useful classes and the subsequent cleanup stays inexpensive.",
+    "average": "Its favourable distribution assumptions govern class balance and cleanup work."
+  },
+  "Spreadsort": {
+    "use": "Numeric or string keys for which radix partitioning can cooperate with comparison-sort fallbacks.",
+    "average": "Depends on the key representation and the hybrid’s choice between distribution and comparisons."
+  },
+  "Introsort": {
+    "average": "Input and pivot strategy affect typical work; the O(n log n) worst bound also bounds average work."
+  },
+  "Timsort": {
+    "average": "Depends on existing run lengths, repeated keys and the merge policy."
+  },
+  "Powersort": {
+    "average": "Depends on the lengths of detected runs; the merge schedule is designed to use that structure."
+  },
+  "Peeksort": {
+    "use": "A run-aware stable sort whose merge schedule is constructed recursively around runs near a midpoint.",
+    "average": "Depends on the run-length structure discovered around recursive midpoints."
+  },
+  "Multiway Powersort": {
+    "use": "An investigation of merging several existing runs together to reduce data transfers across merge levels.",
+    "average": "Depends on run lengths and merge arity; the fixed-arity worst bound also bounds average work."
+  },
+  "GrailSort": {
+    "use": "Stable array sorting when an external record buffer is unavailable and internal block management is acceptable.",
+    "average": "Input structure and internal buffer availability affect work within the stated worst-case bound."
+  },
+  "WikiSort": {
+    "use": "A stable block-merge implementation for exploring the cost of replacing large buffers with rotations and searches.",
+    "average": "Rotations, searches, duplicates and optional caching affect work within its worst-case bound."
+  },
+  "Pattern-defeating quicksort": {
+    "use": "General-purpose unstable sorting that should recognise or disrupt patterns leading to bad partitions.",
+    "average": "Typical work depends on detected patterns and duplicates; safeguards provide the stated worst bound."
+  },
+  "BlockQuicksort": {
+    "use": "A processor-sensitive implementation where reducing unpredictable branches can justify partition buffers.",
+    "average": "Expected bounds depend on pivot assumptions; processor effects are separate from asymptotic work."
+  },
+  "Quadsort": {
+    "use": "A stable merge design whose four-way merge organisation can be evaluated against ordinary two-way merging.",
+    "average": "Depends on input structure and merge behaviour; use its implementation-specific measurements for elapsed time."
+  },
+  "Fluxsort": {
+    "use": "Stable sorting where a record buffer is available and adaptive partitioning can cooperate with merging.",
+    "average": "Depends on how analysis divides work between stable partitioning and merging."
+  },
+  "Crumsort": {
+    "use": "An unstable partitioning design when limiting workspace is more important than preserving equal-key order.",
+    "average": "Depends on partition balance and which adaptive or fallback paths are taken."
+  },
+  "Glidesort": {
+    "use": "Stable sorting of data that may offer both useful runs and repeated keys for a hybrid to exploit.",
+    "average": "Depends on useful runs, repeated keys and the interaction between partitioning and merging."
+  },
+  "Driftsort": {
+    "use": "The stable slice-sorting role described in Rust’s 1.81 release, where equal-key order must be preserved.",
+    "average": "Depends on input order, repeated keys and the chosen small-input or hybrid path."
+  },
+  "Ipnsort": {
+    "use": "The unstable slice-sorting role described in Rust’s 1.81 release, allowing equal-key order to change.",
+    "average": "Depends on duplicates and partition behaviour; the library’s safeguards bound adverse cases."
+  },
+  "Bitonic sort": {
+    "use": "A fixed comparison schedule suited to studying parallel rounds or hardware-like comparator organisation.",
+    "average": "The standard network’s comparison count is fixed by input size, independent of input order."
+  },
+  "Odd-even merge network": {
+    "use": "A comparison network that should use a fixed recursive merging schedule, independent of observed key values.",
+    "average": "The fixed network performs the same comparator schedule for every allowed input of a given size."
+  },
+  "Odd-even transposition sort": {
+    "use": "A nearest-neighbour model where disjoint adjacent comparisons can happen in the same round.",
+    "average": "A fixed-round network ignores input order; an early-exit sequential variant can do less work."
+  },
+  "AKS sorting network": {
+    "use": "Understanding the theoretical possibility of logarithmic parallel depth, rather than choosing a simple practical sort.",
+    "average": "Network size and depth depend on n, not on a probability distribution of input order."
+  },
+  "Samplesort": {
+    "use": "Partitioning work between processors using sampled boundaries, provided buckets remain sufficiently balanced.",
+    "average": "The expected bound depends on sampling and sufficiently balanced bucket occupancy."
+  },
+  "IPS⁴o": {
+    "use": "Parallel in-place engineering where block buffers, locality and balancing work across threads matter.",
+    "average": "Expected work depends on its sampling model; actual throughput also depends on processor and memory behaviour."
+  },
+  "External merge sort": {
+    "average": "Depends on initial runs, RAM, fan-in and external transfers, not just an average comparison count."
+  },
+  "Polyphase merge sort": {
+    "use": "A sequential-storage situation with a limited number of tape-like streams and a need to schedule merge passes.",
+    "average": "Depends on initial run lengths, tape count and the sequence of merge passes."
+  },
+  "Funnelsort": {
+    "use": "Studying cache-efficient sorting without supplying the algorithm with the cache’s specific size.",
+    "average": "Comparison work and expected elapsed time are distinct; its transfer guarantee uses a specified cache model."
+  },
+  "Pancake sort": {
+    "average": "The basic method scans every unfinished prefix for its maximum, giving quadratic comparisons. The number and lengths of flips depend on the input."
+  },
+  "Bead sort / gravity sort": {
+    "use": "A physical-model thought experiment about representing positive integers as beads and accounting for the apparatus.",
+    "average": "Depends on the physical or simulated model, maximum value and representation cost."
+  },
+  "Bogosort": {
+    "use": "A counterexample showing that eventually finding an answer is very different from having a practical procedure.",
+    "average": "With independent uniform shuffles of n distinct keys, success probability per attempt is 1/n!; expected attempts are n!."
+  },
+  "Stooge sort": {
+    "use": "A recursion exercise that exposes the cost of solving overlapping subproblems repeatedly.",
+    "average": "The standard recursion follows the same size-dependent structure regardless of input order."
+  },
+  "Slowsort": {
+    "use": "A deliberate inefficiency example for learning to analyse recursive work rather than judging code by its length.",
+    "average": "The deliberately repeated recursive structure controls its large cost; measured averages do not make it practical."
+  },
+  "Sleep sort": {
+    "average": "Delays depend on values and scheduling jitter; there is no dependable general sorting-time guarantee."
+  },
+  "Stalin sort": {
+    "average": "The one-pass filter performs linear work but does not preserve the full input.",
+    "family": "Unusual",
+    "status": "Filtering, not full sorting"
+  },
+  "I Can’t Believe It Can Sort": {
+    "use": "Testing an initially surprising loop structure, then explaining its correctness through an ordered-prefix invariant."
+  },
+  "ExpoSort": {
+    "use": "An intentionally reluctant sorting construction used to explore exponential work rather than reduce it.",
+    "average": "Its deliberately exponential recursion is the object of analysis, not an optimised average workload."
+  },
+  "LearnedSort": {
+    "use": "Numeric sorting where a learned estimate of rank may guide distribution and repair can restore exact order.",
+    "average": "Depends on the distribution, model error, training overhead and cost of repairing misplaced records."
+  },
+  "LearnedSort 2.0": {
+    "use": "Studying how a learned distribution sort handles the repeated keys that challenged its earlier design.",
+    "average": "Depends in particular on repeated-key behaviour as well as prediction and repair cost."
+  },
+  "AlphaDev small-sort routines": {
+    "average": "Input size is fixed and tiny; useful measurements compare instruction sequences on specified hardware."
+  },
+  "DovetailSort": {
+    "use": "Parallel integer-sorting research in which representation and frequent keys are part of the computational model.",
+    "average": "Depends on the integer-key and processor model, including key frequencies."
+  },
+  "Parameter-aware partition sorting": {
+    "use": "Studying a formal notion of optimality that depends on richer input parameters than length alone.",
+    "average": "Read the cited paper’s input parameters and optimality definition before comparing averages."
+  },
+  "Adaptive Hybrid Sort": {
+    "use": "Examining the cited proposal’s strategy-selection rules and the assumptions behind its reported comparisons.",
+    "average": "Depends on the specific strategies selected and the paper’s workload assumptions.",
+    "story": "The specific research proposal linked below studies selection between strategies; this label is not a unique name for every adaptive hybrid."
+  },
+  "bsort": {
+    "use": "Research on sorting different numeric representations using a binary-quicksort-derived framework."
+  },
+  "Need for Speed Sort": {
+    "use": "Exploring numeric interval refinement with cleanup and fallback when an interval split does not help."
+  },
+  "Minimal-move in-place sorting": {
+    "use": "Research where moving records is expensive enough to make linear moves a distinct objective.",
+    "average": "The highlighted comparison guarantee is probabilistic; it is not itself an average runtime statement."
+  },
+  "Random-order online sorting": {
+    "use": "Studying the cited online arrival model; its decisions and objective differ from sorting an available array.",
+    "average": "The expectation is tied to its random-arrival model and online objective."
+  }
+}

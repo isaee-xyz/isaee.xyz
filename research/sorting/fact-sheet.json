@@ -424,7 +424,7 @@
       ],
       "id": "cocktail-shaker-sort",
       "average": "Quadratic on typical random permutations; favourable inputs can be cheaper.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "use": "A teaching comparison with bubble sort when small values need to travel left as well as large values right."
     },
     {
       "name": "Comb sort",
@@ -442,8 +442,8 @@
         "comb"
       ],
       "id": "comb-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on input distribution and the shrink policy; the displayed quadratic worst-case bound is not an average.",
+      "use": "A study of whether moving distant inversions early reduces later adjacent swaps on the same input."
     },
     {
       "name": "Gnome sort",
@@ -462,7 +462,7 @@
       ],
       "id": "gnome-sort",
       "average": "Θ(n²) on random permutations; linear on already ordered input.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "use": "A compact way to express insertion-like repair using a cursor that walks forward and backward."
     },
     {
       "name": "Shellsort",
@@ -480,8 +480,8 @@
         "shell"
       ],
       "id": "shellsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on the gap sequence as well as the distribution of inputs.",
+      "use": "An array sort with constant auxiliary storage, when the selected gap sequence suits the workload."
     },
     {
       "name": "Merge sort",
@@ -520,7 +520,7 @@
       ],
       "id": "bottom-up-merge-sort",
       "average": "Θ(n log n) for the conventional fixed merge schedule.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "use": "A merge-based implementation that should use iterative passes rather than recursive calls."
     },
     {
       "name": "Natural merge sort",
@@ -528,7 +528,7 @@
       "year": 0,
       "family": "Foundations",
       "status": "Variant",
-      "cost": "O(n log r), r runs; O(n) for one run",
+      "cost": "O(n log r) with pairwise merge passes; O(n) for one run",
       "stable": "Yes, with careful ties",
       "memory": "O(n), common implementation",
       "idea": "Recognise already ordered runs and merge them rather than starting from singletons.",
@@ -539,8 +539,8 @@
         "power"
       ],
       "id": "natural-merge-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on the number and lengths of runs and the merge schedule.",
+      "use": "A collection already organised into ascending runs, where recognising those runs avoids rebuilding all order."
     },
     {
       "name": "Quicksort",
@@ -580,7 +580,7 @@
       ],
       "id": "three-way-quicksort",
       "average": "Expected O(n log n), often less with many equal keys; pivot assumptions matter.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "use": "A list containing many repeated keys, where equal values can be removed from further recursive sorting."
     },
     {
       "name": "Dual-pivot quicksort",
@@ -598,8 +598,8 @@
         "dual"
       ],
       "id": "dual-pivot-quicksort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on pivot selection, duplicates and the surrounding hybrid implementation.",
+      "use": "An implementation study of partitioning into three regions and the memory scans those partitions require."
     },
     {
       "name": "Heapsort",
@@ -636,8 +636,8 @@
         "smooth"
       ],
       "id": "smoothsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on pre-existing order; its best and worst bounds describe different ends of that range.",
+      "use": "A memory-constrained setting where adaptation to existing order is worth more involved heap bookkeeping."
     },
     {
       "name": "Tree sort",
@@ -655,8 +655,8 @@
         "bst"
       ],
       "id": "tree-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on the tree’s balancing policy and insertion order.",
+      "use": "Records being inserted into an ordered search structure that will later be traversed in key order."
     },
     {
       "name": "Tournament sort",
@@ -674,8 +674,8 @@
         "tournament"
       ],
       "id": "tournament-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "O(n log n) is also an upper bound on average work in the usual tournament-tree model.",
+      "use": "Repeatedly selecting the next record while retaining comparisons from earlier rounds in a tournament tree."
     },
     {
       "name": "Cycle sort",
@@ -693,7 +693,7 @@
         "cycle"
       ],
       "id": "cycle-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on how destination ranks are obtained; the common comparison-ranked variant spends quadratic work finding them.",
       "use": "A situation where overwriting records is expensive and reducing writes is worth extra comparisons."
     },
     {
@@ -712,7 +712,7 @@
         "patience"
       ],
       "id": "patience-sorting",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on the pile structure and the search/extraction implementation; the efficient version has O(n log n) total work.",
       "use": "Reasoning about card piles and the length of an increasing subsequence, with a merge stage for full sorting."
     },
     {
@@ -731,8 +731,8 @@
         "strand"
       ],
       "id": "strand-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "Depends on how long the extracted strands are and how they are merged.",
+      "use": "A linked-list exercise in removing increasing subsequences and merging them into an accumulated output."
     },
     {
       "name": "Ford–Johnson / merge-insertion",
@@ -750,8 +750,8 @@
         "ford"
       ],
       "id": "ford-johnson-merge-insertion",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives."
+      "average": "The classic objective is worst-case comparison count; average comparisons require an input model.",
+      "use": "Small inputs whose comparisons are expensive enough to justify a carefully scheduled insertion process."
     },
     {
       "name": "Counting sort",
@@ -798,7 +798,7 @@
       "year": 0,
       "family": "Distribution",
       "status": "Established",
-      "cost": "O(d(n + b)), conventional bound",
+      "cost": "Key-length, radix and recursive-bucket dependent",
       "stable": "Implementation-dependent",
       "memory": "Implementation-dependent",
       "idea": "Group by the most significant digit and recursively refine each group.",
@@ -808,7 +808,7 @@
         "string"
       ],
       "id": "msd-radix-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on shared prefixes, key lengths, radix and how each recursive bucket is processed.",
       "use": "Strings or identifiers sharing prefixes, where later characters matter only inside tied groups."
     },
     {
@@ -827,8 +827,8 @@
         "bucket"
       ],
       "id": "bucket-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "Expected linear work needs an appropriate distribution and bucket count; a crowded bucket changes the cost.",
+      "use": "Numeric keys with a known useful distribution, so ordered ranges can divide the work into small local sorts."
     },
     {
       "name": "Histogram sort",
@@ -846,8 +846,8 @@
         "bucket"
       ],
       "id": "histogram-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "Depends on bucket occupancy and the method used to finish each bucket.",
+      "use": "A distribution pipeline that must know each bucket’s size before assigning contiguous output space."
     },
     {
       "name": "Pigeonhole sort",
@@ -866,8 +866,8 @@
         "bucket"
       ],
       "id": "pigeonhole-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "The usual scan-and-collect procedure costs O(n + k) for all inputs in the stated key range.",
+      "use": "Records whose integer keys occupy a small range and can be collected into one container per possible key."
     },
     {
       "name": "American flag sort",
@@ -885,8 +885,8 @@
         "flag"
       ],
       "id": "american-flag-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "Depends on key lengths, radix and the distribution of prefixes.",
+      "use": "Digit-based grouping where a full second record array is undesirable and stability is not required."
     },
     {
       "name": "Flashsort",
@@ -904,8 +904,8 @@
         "flash"
       ],
       "id": "flashsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "Its favourable distribution assumptions govern class balance and cleanup work.",
+      "use": "Numeric data where interpolation yields useful classes and the subsequent cleanup stays inexpensive."
     },
     {
       "name": "Spreadsort",
@@ -923,8 +923,8 @@
         "spread"
       ],
       "id": "spreadsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold."
+      "average": "Depends on the key representation and the hybrid’s choice between distribution and comparisons.",
+      "use": "Numeric or string keys for which radix partitioning can cooperate with comparison-sort fallbacks."
     },
     {
       "name": "Introsort",
@@ -942,7 +942,7 @@
         "intro"
       ],
       "id": "introsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Input and pivot strategy affect typical work; the O(n log n) worst bound also bounds average work.",
       "use": "General-purpose library sorting that needs both quicksort-like speed and worst-case protection."
     },
     {
@@ -962,7 +962,7 @@
         "power"
       ],
       "id": "timsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on existing run lengths, repeated keys and the merge policy.",
       "use": "Data arriving as several already ordered runs, such as concatenated sorted batches."
     },
     {
@@ -981,7 +981,7 @@
         "power"
       ],
       "id": "powersort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on the lengths of detected runs; the merge schedule is designed to use that structure.",
       "use": "Stable library sorting that should preserve and efficiently combine existing runs."
     },
     {
@@ -1000,8 +1000,8 @@
         "power"
       ],
       "id": "peeksort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on the run-length structure discovered around recursive midpoints.",
+      "use": "A run-aware stable sort whose merge schedule is constructed recursively around runs near a midpoint."
     },
     {
       "name": "Multiway Powersort",
@@ -1019,8 +1019,8 @@
         "multipower"
       ],
       "id": "multiway-powersort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on run lengths and merge arity; the fixed-arity worst bound also bounds average work.",
+      "use": "An investigation of merging several existing runs together to reduce data transfers across merge levels."
     },
     {
       "name": "GrailSort",
@@ -1038,8 +1038,8 @@
         "grail"
       ],
       "id": "grailsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Input structure and internal buffer availability affect work within the stated worst-case bound.",
+      "use": "Stable array sorting when an external record buffer is unavailable and internal block management is acceptable."
     },
     {
       "name": "WikiSort",
@@ -1057,8 +1057,8 @@
         "wiki"
       ],
       "id": "wikisort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Rotations, searches, duplicates and optional caching affect work within its worst-case bound.",
+      "use": "A stable block-merge implementation for exploring the cost of replacing large buffers with rotations and searches."
     },
     {
       "name": "Pattern-defeating quicksort",
@@ -1076,8 +1076,8 @@
         "pdq"
       ],
       "id": "pattern-defeating-quicksort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Typical work depends on detected patterns and duplicates; safeguards provide the stated worst bound.",
+      "use": "General-purpose unstable sorting that should recognise or disrupt patterns leading to bad partitions."
     },
     {
       "name": "BlockQuicksort",
@@ -1095,8 +1095,8 @@
         "block"
       ],
       "id": "blockquicksort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Expected bounds depend on pivot assumptions; processor effects are separate from asymptotic work.",
+      "use": "A processor-sensitive implementation where reducing unpredictable branches can justify partition buffers."
     },
     {
       "name": "Quadsort",
@@ -1114,8 +1114,8 @@
         "quad"
       ],
       "id": "quadsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on input structure and merge behaviour; use its implementation-specific measurements for elapsed time.",
+      "use": "A stable merge design whose four-way merge organisation can be evaluated against ordinary two-way merging."
     },
     {
       "name": "Fluxsort",
@@ -1133,8 +1133,8 @@
         "flux"
       ],
       "id": "fluxsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on how analysis divides work between stable partitioning and merging.",
+      "use": "Stable sorting where a record buffer is available and adaptive partitioning can cooperate with merging."
     },
     {
       "name": "Crumsort",
@@ -1152,8 +1152,8 @@
         "crum"
       ],
       "id": "crumsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on partition balance and which adaptive or fallback paths are taken.",
+      "use": "An unstable partitioning design when limiting workspace is more important than preserving equal-key order."
     },
     {
       "name": "Glidesort",
@@ -1171,8 +1171,8 @@
         "glide"
       ],
       "id": "glidesort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the implementation when its combination of stability, memory and input adaptivity matches the workload."
+      "average": "Depends on useful runs, repeated keys and the interaction between partitioning and merging.",
+      "use": "Stable sorting of data that may offer both useful runs and repeated keys for a hybrid to exploit."
     },
     {
       "name": "Driftsort",
@@ -1191,8 +1191,8 @@
         "drift"
       ],
       "id": "driftsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "The stable slice-sorting implementation adopted by Rust 1.81."
+      "average": "Depends on input order, repeated keys and the chosen small-input or hybrid path.",
+      "use": "The stable slice-sorting role described in Rust’s 1.81 release, where equal-key order must be preserved."
     },
     {
       "name": "Ipnsort",
@@ -1210,8 +1210,8 @@
         "rust"
       ],
       "id": "ipnsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "The unstable slice-sorting implementation adopted by Rust 1.81."
+      "average": "Depends on duplicates and partition behaviour; the library’s safeguards bound adverse cases.",
+      "use": "The unstable slice-sorting role described in Rust’s 1.81 release, allowing equal-key order to change."
     },
     {
       "name": "Bitonic sort",
@@ -1230,8 +1230,8 @@
         "batcher"
       ],
       "id": "bitonic-sort",
-      "average": "The comparator count does not depend on the values: a fixed O(n log² n) network.",
-      "use": "Parallel comparator schedules and fixed small networks; hardware or vectorisation changes the tradeoff."
+      "average": "The standard network’s comparison count is fixed by input size, independent of input order.",
+      "use": "A fixed comparison schedule suited to studying parallel rounds or hardware-like comparator organisation."
     },
     {
       "name": "Odd-even merge network",
@@ -1249,8 +1249,8 @@
         "batcher"
       ],
       "id": "odd-even-merge-network",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task."
+      "average": "The fixed network performs the same comparator schedule for every allowed input of a given size.",
+      "use": "A comparison network that should use a fixed recursive merging schedule, independent of observed key values."
     },
     {
       "name": "Odd-even transposition sort",
@@ -1268,8 +1268,8 @@
         "parallel"
       ],
       "id": "odd-even-transposition-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task."
+      "average": "A fixed-round network ignores input order; an early-exit sequential variant can do less work.",
+      "use": "A nearest-neighbour model where disjoint adjacent comparisons can happen in the same round."
     },
     {
       "name": "AKS sorting network",
@@ -1287,8 +1287,8 @@
         "aks"
       ],
       "id": "aks-sorting-network",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Understanding what is theoretically possible for parallel depth, rather than choosing a simple app implementation."
+      "average": "Network size and depth depend on n, not on a probability distribution of input order.",
+      "use": "Understanding the theoretical possibility of logarithmic parallel depth, rather than choosing a simple practical sort."
     },
     {
       "name": "Samplesort",
@@ -1307,8 +1307,8 @@
         "parallel"
       ],
       "id": "samplesort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task."
+      "average": "The expected bound depends on sampling and sufficiently balanced bucket occupancy.",
+      "use": "Partitioning work between processors using sampled boundaries, provided buckets remain sufficiently balanced."
     },
     {
       "name": "IPS⁴o",
@@ -1326,8 +1326,8 @@
         "ips"
       ],
       "id": "ips-o",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task."
+      "average": "Expected work depends on its sampling model; actual throughput also depends on processor and memory behaviour.",
+      "use": "Parallel in-place engineering where block buffers, locality and balancing work across threads matter."
     },
     {
       "name": "External merge sort",
@@ -1346,7 +1346,7 @@
         "poly"
       ],
       "id": "external-merge-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Depends on initial runs, RAM, fan-in and external transfers, not just an average comparison count.",
       "use": "A file or database export too large for RAM, where sequential reads and writes are valuable."
     },
     {
@@ -1365,8 +1365,8 @@
         "poly"
       ],
       "id": "polyphase-merge-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Historical tape workloads with few drives and sequential access."
+      "average": "Depends on initial run lengths, tape count and the sequence of merge passes.",
+      "use": "A sequential-storage situation with a limited number of tape-like streams and a need to schedule merge passes."
     },
     {
       "name": "Funnelsort",
@@ -1384,8 +1384,8 @@
         "funnel"
       ],
       "id": "funnelsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task."
+      "average": "Comparison work and expected elapsed time are distinct; its transfer guarantee uses a specified cache model.",
+      "use": "Studying cache-efficient sorting without supplying the algorithm with the cache’s specific size."
     },
     {
       "name": "Pancake sort",
@@ -1403,7 +1403,7 @@
         "pancake"
       ],
       "id": "pancake-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "The basic method scans every unfinished prefix for its maximum, giving quadratic comparisons. The number and lengths of flips depend on the input.",
       "use": "A constrained-move puzzle: useful for learning to design a procedure around operations you are allowed to use."
     },
     {
@@ -1422,8 +1422,8 @@
         "bead"
       ],
       "id": "bead-sort-gravity-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "average": "Depends on the physical or simulated model, maximum value and representation cost.",
+      "use": "A physical-model thought experiment about representing positive integers as beads and accounting for the apparatus."
     },
     {
       "name": "Bogosort",
@@ -1441,8 +1441,8 @@
         "bogo"
       ],
       "id": "bogosort",
-      "average": "Expected n! shuffles for distinct keys; Θ(n·n!) time if each shuffle costs Θ(n).",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "average": "With independent uniform shuffles of n distinct keys, success probability per attempt is 1/n!; expected attempts are n!.",
+      "use": "A counterexample showing that eventually finding an answer is very different from having a practical procedure."
     },
     {
       "name": "Stooge sort",
@@ -1460,8 +1460,8 @@
         "stooge"
       ],
       "id": "stooge-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "average": "The standard recursion follows the same size-dependent structure regardless of input order.",
+      "use": "A recursion exercise that exposes the cost of solving overlapping subproblems repeatedly."
     },
     {
       "name": "Slowsort",
@@ -1479,8 +1479,8 @@
         "expo"
       ],
       "id": "slowsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "average": "The deliberately repeated recursive structure controls its large cost; measured averages do not make it practical.",
+      "use": "A deliberate inefficiency example for learning to analyse recursive work rather than judging code by its length."
     },
     {
       "name": "Sleep sort",
@@ -1498,7 +1498,7 @@
         "sleep"
       ],
       "id": "sleep-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Delays depend on values and scheduling jitter; there is no dependable general sorting-time guarantee.",
       "use": "A thought experiment about clocks, parallel tasks and hidden scheduling costs."
     },
     {
@@ -1506,7 +1506,7 @@
       "date": "Internet folklore; origin uncertain",
       "year": 0,
       "family": "Unusual",
-      "status": "Not a valid full sort",
+      "status": "Filtering, not full sorting",
       "cost": "O(n) filtering",
       "stable": "Keeps surviving order",
       "memory": "O(1) possible",
@@ -1518,7 +1518,7 @@
         "contract"
       ],
       "id": "stalin-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "The one-pass filter performs linear work but does not preserve the full input.",
       "use": "A counterexample for testing specifications. Deletion is valid filtering, but is not full sorting."
     },
     {
@@ -1538,7 +1538,7 @@
       ],
       "id": "i-can-t-believe-it-can-sort",
       "average": "Exactly n² key comparisons on every input of length n, including already ordered input.",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "use": "Testing an initially surprising loop structure, then explaining its correctness through an ordered-prefix invariant."
     },
     {
       "name": "ExpoSort",
@@ -1556,8 +1556,8 @@
         "expo"
       ],
       "id": "exposort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance."
+      "average": "Its deliberately exponential recursion is the object of analysis, not an optimised average workload.",
+      "use": "An intentionally reluctant sorting construction used to explore exponential work rather than reduce it."
     },
     {
       "name": "LearnedSort",
@@ -1575,8 +1575,8 @@
         "learned"
       ],
       "id": "learnedsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Study how a learned component contributes, and include its training or correction cost in the appropriate phase."
+      "average": "Depends on the distribution, model error, training overhead and cost of repairing misplaced records.",
+      "use": "Numeric sorting where a learned estimate of rank may guide distribution and repair can restore exact order."
     },
     {
       "name": "LearnedSort 2.0",
@@ -1594,8 +1594,8 @@
         "learned2"
       ],
       "id": "learnedsort-2-0",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Study how a learned component contributes, and include its training or correction cost in the appropriate phase."
+      "average": "Depends in particular on repeated-key behaviour as well as prediction and repair cost.",
+      "use": "Studying how a learned distribution sort handles the repeated keys that challenged its earlier design."
     },
     {
       "name": "AlphaDev small-sort routines",
@@ -1613,7 +1613,7 @@
         "alpha"
       ],
       "id": "alphadev-small-sort-routines",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
+      "average": "Input size is fixed and tiny; useful measurements compare instruction sequences on specified hardware.",
       "use": "Tiny fixed-size subroutines called inside a larger library sort. The learning happens before deployment."
     },
     {
@@ -1632,8 +1632,8 @@
         "dovetail"
       ],
       "id": "dovetailsort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "average": "Depends on the integer-key and processor model, including key frequencies.",
+      "use": "Parallel integer-sorting research in which representation and frequent keys are part of the computational model."
     },
     {
       "name": "Parameter-aware partition sorting",
@@ -1651,8 +1651,8 @@
         "universal"
       ],
       "id": "parameter-aware-partition-sorting",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "average": "Read the cited paper’s input parameters and optimality definition before comparing averages.",
+      "use": "Studying a formal notion of optimality that depends on richer input parameters than length alone."
     },
     {
       "name": "Adaptive Hybrid Sort",
@@ -1664,14 +1664,14 @@
       "stable": "Chosen-strategy dependent",
       "memory": "Chosen-strategy dependent",
       "idea": "Select among sorting strategies using observed properties of the input.",
-      "story": "A recent proposal makes strategy selection itself the algorithmic subject.",
+      "story": "The specific research proposal linked below studies selection between strategies; this label is not a unique name for every adaptive hybrid.",
       "catch": "Author-reported comparisons need independent reproduction; do not treat a promising title as a universal guarantee.",
       "sources": [
         "ahs"
       ],
       "id": "adaptive-hybrid-sort",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "average": "Depends on the specific strategies selected and the paper’s workload assumptions.",
+      "use": "Examining the cited proposal’s strategy-selection rules and the assumptions behind its reported comparisons."
     },
     {
       "name": "bsort",
@@ -1690,7 +1690,7 @@
       ],
       "id": "bsort",
       "average": "Reported O(wn) bound; actual average timing depends on numeric type and implementation.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "use": "Research on sorting different numeric representations using a binary-quicksort-derived framework."
     },
     {
       "name": "Need for Speed Sort",
@@ -1709,7 +1709,7 @@
       ],
       "id": "need-for-speed-sort",
       "average": "Author-reported benchmark results; no independent average reproduced here.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "use": "Exploring numeric interval refinement with cleanup and fallback when an interval split does not help."
     },
     {
       "name": "Minimal-move in-place sorting",
@@ -1727,8 +1727,8 @@
         "moves"
       ],
       "id": "minimal-move-in-place-sorting",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "average": "The highlighted comparison guarantee is probabilistic; it is not itself an average runtime statement.",
+      "use": "Research where moving records is expensive enough to make linear moves a distinct objective."
     },
     {
       "name": "Random-order online sorting",
@@ -1746,8 +1746,8 @@
         "online"
       ],
       "id": "random-order-online-sorting",
-      "average": "No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.",
-      "use": "Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption."
+      "average": "The expectation is tied to its random-arrival model and online objective.",
+      "use": "Studying the cited online arrival model; its decisions and objective differ from sorting an available array."
     }
   ]
 }

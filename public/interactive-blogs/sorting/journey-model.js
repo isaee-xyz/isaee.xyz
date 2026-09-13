@@ -1,0 +1,10 @@
+import {runSort,auditResult,METHODS} from './algorithms.js';
+export function shuffled(n,seed=41){const a=Array.from({length:n},(_,i)=>i+1);let s=seed>>>0;for(let i=n-1;i>0;i--){s=(Math.imul(s,1664525)+1013904223)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+export function pictureInput(pattern,seed=41){const a=Array.from({length:8},(_,i)=>i+1);if(pattern==='sorted')return a;if(pattern==='reverse')return a.reverse();if(pattern==='nearly'){[a[3],a[4]]=[a[4],a[3]];return a;}return shuffled(8,seed);}
+// Picture checkpoints never display a partially overwritten array as a complete set of records.
+export function pictureTrace(method,input){const result=runSort(method,input);if(!auditResult(input,result.a,METHODS[method].stable).pass)throw new Error('Invalid algorithm result');let last='';const frames=result.frames.filter(f=>{if(new Set(f.a.map(x=>x.id)).size!==input.length)return false;const key=f.a.map(x=>x.id).join(',');if(key===last&&!f.complete)return false;last=key;return true;});return {...result,frames};}
+export const permutations=a=>a.length?a.flatMap((v,i)=>permutations(a.filter((_,j)=>i!==j)).map(r=>[v,...r])):[[]];
+export function testNetwork(program){return permutations([1,2,3]).map(input=>{const output=[...input];for(const [i,j] of program){if(!Number.isInteger(i)||!Number.isInteger(j)||i<0||j>2||i>=j)throw new Error('Invalid comparator');if(output[i]>output[j])[output[i],output[j]]=[output[j],output[i]];}return {input,output,pass:output.every((v,i)=>i===0||output[i-1]<=v)};});}
+export function flipPrefix(a,index){if(!Number.isInteger(index)||index<0||index>=a.length)throw new Error('Invalid flip');return [...a.slice(0,index+1).reverse(),...a.slice(index+1)];}
+export function isOrdered(a){return a.every((v,i)=>!i||a[i-1]<=v);}
+export function parseChallenge(search){const raw=new URLSearchParams(search).get('cards');if(!raw)return null;const a=raw.split(',').map(Number);return a.length===6&&a.every(v=>Number.isInteger(v)&&v>=1&&v<=99)&&new Set(a).size===6?a:null;}

@@ -1,0 +1,22 @@
+{
+  "pictures": 1280,
+  "checkpoints": 12886,
+  "programs": 121,
+  "passingPrograms": 42,
+  "pancakeSolutionIndices": [
+    3,
+    1,
+    4,
+    3,
+    1
+  ],
+  "checks": [
+    "All picture checkpoints preserve record identity",
+    "All 16 methods reconstruct identical picture inputs",
+    "Final counters equal untraced engine counters",
+    "Exhaustive comparator programs through four instructions",
+    "Three-comparison network succeeds on all six permutations",
+    "Prefix flips preserve all pancakes",
+    "Shared inputs validated and deterministic"
+  ]
+}

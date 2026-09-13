@@ -217,3 +217,10 @@ for a in data['algorithms']:
  a['average']=averages.get(a['name'],'No single average is claimed: specify an input distribution, implementation and cost model. The stated cost above gives the available bound or dependency.')
  a['use']=uses.get(a['name'],{'Foundations':'Use it to study a distinct way of preserving order and making progress. Compare its costs against the simpler alternatives.','Distribution':'Consider the idea when keys expose useful numeric ranges or representations; verify that the distribution assumptions hold.','Hybrids':'Consider the implementation when its combination of stability, memory and input adaptivity matches the workload.','Parallel & external':'Consider the idea when parallelism, memory transfers or external storage are the resource that limits the task.','Unusual':'Use it as a reasoning exercise or counterexample; its educational value can outweigh its practical performance.','AI & learning':'Study how a learned component contributes, and include its training or correction cost in the appropriate phase.','Research frontier':'Use it to understand a recent research direction. Validate the paper’s model and reproduce relevant measurements before adoption.'}[a['family']])
 (root/'research/sorting/fact-sheet.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
+
+# Reader-focused, versioned editorial revisions.
+overrides_path=root/"research/sorting/editorial-overrides.json"
+if overrides_path.exists():
+ overrides=json.loads(overrides_path.read_text())
+ for a in data["algorithms"]:a.update(overrides.get(a["name"],{}))
+ (root/"research/sorting/fact-sheet.json").write_text(json.dumps(data,ensure_ascii=False,indent=2))

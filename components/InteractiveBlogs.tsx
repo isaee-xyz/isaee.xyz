@@ -10,8 +10,8 @@ export default function InteractiveBlogs() {
             <a href="/interactive-blogs/" className="inline-block mt-6 font-mono text-sm font-bold underline underline-offset-4">All interactive blogs →</a>
             <a href="/interactive-blogs/sorting/" className="block mt-6 border-t-2 border-black pt-5 max-w-lg group">
               <span className="font-mono text-xs font-bold">NEW · ALGORITHMS & EVERYDAY LIFE</span>
-              <h3 className="text-2xl font-black mt-2 group-hover:underline">A little order. A different way to think. ↗</h3>
-              <p className="mt-2 text-base">Explore 74 sorting methods, run 16 algorithms, and learn how to think in steps.</p>
+              <h3 className="text-2xl font-black mt-2 group-hover:underline">This looks wrong. It still sorts. ↗</h3>
+              <p className="mt-2 text-base">Solve a sorting mystery, rebuild one picture 16 ways, and learn how to think in steps.</p>
             </a>
           </div>
           <a href="/interactive-blogs/ai-text-watermarking/" className="group block bg-white border-4 border-black shadow-neo-lg p-6 md:p-8 hover:-translate-y-1 transition-transform focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4">
